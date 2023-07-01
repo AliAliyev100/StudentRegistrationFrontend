@@ -1,0 +1,28 @@
+.navbar {
+    background-color: #f5f5f5;
+    padding: 10px;
+}
+
+.navbar__list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar__item {
+    margin-right: 10px;
+}
+
+.navbar__link {
+    text-decoration: none;
+    color: #333;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.navbar__link:hover {
+    background-color: #ccc;
+}

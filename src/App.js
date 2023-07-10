@@ -1,15 +1,43 @@
 import "./App.css";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Navbar from "./components/navbar";
+import useLocalStorage from "./hooks/useLocalStorage";
+
+import { userAuthContext } from "./contexts/userAuthContext";
+
+import Test from "./components/test";
 import { NavLink } from "react-router-dom";
 import Courses from "./pages/courses";
+import Login from "./pages/login";
+import Register from "./pages/register";
 
 function App() {
+  const {
+    isLoggedIn,
+    setUserToken,
+    setUserId,
+    setUsername,
+    setUserRole,
+    setIsLoggedIn,
+    userRole,
+  } = useContext(userAuthContext);
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div className="container-fluid">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="true"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -18,49 +46,83 @@ function App() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="courses">
-                  Courses
+                <NavLink className="nav-link" to="pricing">
+                  About
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="pricing">
-                  Pricing
+                <NavLink className="nav-link" to="courses">
+                  All Courses
                 </NavLink>
               </li>
-              <li className="nav-item dropdown">
-                <NavLink
-                  className="nav-link dropdown-toggle"
-                  to="courses"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Join us
-                </NavLink>
-                <ul className="dropdown-menu dropdown-menu-dark">
-                  <li>
-                    <NavLink className="dropdown-item" to="login">
-                      Login
+              {userRole === "instructor" && (
+                <React.Fragment>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="my-courses">
+                      My Courses
                     </NavLink>
                   </li>
-                  <li>
-                    <NavLink className="dropdown-item" to="register">
-                      Register
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="create-course">
+                      Create a Course
                     </NavLink>
                   </li>
-                </ul>
-              </li>
+                </React.Fragment>
+              )}
+              {!isLoggedIn ? (
+                <li className="nav-item dropdown">
+                  <NavLink
+                    className="nav-link dropdown-toggle"
+                    to="login"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Join us
+                  </NavLink>
+                  <ul className="dropdown-menu dropdown-menu-dark">
+                    <li>
+                      <NavLink className="dropdown-item" to="login">
+                        Login
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="dropdown-item" to="register">
+                        Register
+                      </NavLink>
+                    </li>
+                  </ul>
+                </li>
+              ) : (
+                <li className="nav-item">
+                  <button className="nav-link" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </div>
       </nav>
-
       <Routes>
-        <Route path="/" element={<Navbar />} />
+        <Route path="/" element={<Test />} />
         <Route path="/courses" element={<Courses />} />
+        {userRole === "instructor" && (
+          <Route path="/create-course" element={<Courses />} />
+        )}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );
+
+  function handleLogout() {
+    setUserToken("");
+    setUserId("");
+    setUsername("");
+    setUserRole("");
+    setIsLoggedIn(false);
+  }
 }
 
 export default App;

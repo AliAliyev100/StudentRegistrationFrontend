@@ -1,3 +1,9 @@
-export default function Courses() {
-  return <div>List of courses</div>;
+// import React, { useState, useEffect, useContext } from "react";
+// import { useFetch } from "../hooks/useFetch";
+// import { useNavigate, NavLink } from "react-router-dom";
+
+export default function Courses(props) {
+  // const navigate = useNavigate();
+
+  return <div className="course"></div>;
 }

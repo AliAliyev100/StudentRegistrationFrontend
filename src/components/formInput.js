@@ -12,14 +12,13 @@ const FormInput = (props) => {
   return (
     <div className="formInput">
       <label>{label}</label>
-      {inputProps.type === "select" ? (
+      {inputProps.type === "file" ? (
+        <input type="file" onChange={onChange} />
+      ) : inputProps.type === "select" ? (
         <select
           {...inputProps}
           onChange={onChange}
           onBlur={handleFocus}
-          onFocus={() =>
-            inputProps.name === "confirmPassword" && setFocused(true)
-          }
           focused={focused.toString()}
         >
           {inputProps.options.map((option) => (

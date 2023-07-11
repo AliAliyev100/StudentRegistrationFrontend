@@ -11,6 +11,7 @@ import { NavLink } from "react-router-dom";
 import Courses from "./pages/courses";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import CreateCourse from "./pages/create-course";
 
 function App() {
   const {
@@ -108,7 +109,7 @@ function App() {
         <Route path="/" element={<Test />} />
         <Route path="/courses" element={<Courses />} />
         {userRole === "instructor" && (
-          <Route path="/create-course" element={<Courses />} />
+          <Route path="/create-course" element={<CreateCourse />} />
         )}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

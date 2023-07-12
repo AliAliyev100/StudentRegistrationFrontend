@@ -11,7 +11,7 @@ export const useFetch = (url, options = {}) => {
 
   const memoizedOptions = useMemo(() => {
     return { ...options };
-  }, [JSON.stringify(options), options]);
+  }, [options]);
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);

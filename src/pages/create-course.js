@@ -16,11 +16,11 @@ export default function CreateCourse() {
   const { userToken, isLoggedIn } = useContext(userAuthContext);
 
   const [values, setValues] = useState({
-    name: "Ali",
-    description: "DescriptionofDescription",
-    startdate: Date(),
-    enddate: Date(),
-    participitantLimit: 3,
+    name: "",
+    description: "",
+    startdate: null,
+    enddate: null,
+    participitantLimit: 0,
     status: "Active",
   });
 
@@ -32,7 +32,6 @@ export default function CreateCourse() {
     const { name, value, type } = e.target;
     if (type === "file") {
       const file = e.target.files[0];
-      console.log(file instanceof Blob);
       setFile(file);
     } else {
       setValues((prevValues) => ({

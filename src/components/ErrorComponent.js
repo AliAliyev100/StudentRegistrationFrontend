@@ -3,13 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function ErrorComponent(props) {
   const { error } = props;
-
-  const errorMessages = Array.isArray(error)
-    ? error.map((err, index) => (
-        <h3 key={`error-${index}`}>{err.toString()}!</h3>
-      ))
-    : [<h3 key="error">{error.toString()}!</h3>];
-
+  const errorMessages = [<h3 key="error">{error.toString()}!</h3>];
   return (
     <div>
       {errorMessages}

@@ -23,16 +23,11 @@ export const useFetch = (url, options = {}) => {
         },
         ...options,
       });
+
       const responseData = await response.json();
 
       if (!response.ok) {
-        if (responseData.data) {
-          setError(
-            responseData.data.map((error) => error.msg) || "Request failed"
-          );
-        } else {
-          setError([responseData.message] || "Request failed");
-        }
+        throw new Error(responseData.message || "Request failed");
       } else {
         setData(responseData);
         setError(null);

@@ -1,9 +1,9 @@
 import { useState, useContext, useCallback, useMemo } from "react";
 
-import { userDataContext } from "../contexts/userDataContext";
+import { userAuthContext } from "../contexts/userAuthContext";
 
 export const useFetch = (url, options = {}) => {
-  const { userToken } = useContext(userDataContext);
+  const { userToken } = useContext(userAuthContext);
 
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);

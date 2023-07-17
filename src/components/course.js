@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { userDataContext } from "../contexts/userDataContext";
+import { userAuthContext } from "../contexts/userAuthContext";
 
 import "../css/courses.css";
 
@@ -24,7 +24,7 @@ const Course = ({
     numberOfParticipants < limit
   );
 
-  const { userId, isLoggedIn } = useContext(userDataContext);
+  const { userId, isLoggedIn } = useContext(userAuthContext);
 
   const options = {
     method: "POST",

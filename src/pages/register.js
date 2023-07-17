@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { useNavigate, NavLink } from "react-router-dom";
 
-import { userDataContext } from "../contexts/userDataContext";
+import { userAuthContext } from "../contexts/userAuthContext";
 
 import FormInput from "../components/formInput";
 import { registerData } from "../data/registerData";
@@ -20,7 +20,7 @@ export default function Register() {
     setUserRole,
     isLoggedIn,
     setIsLoggedIn,
-  } = useContext(userDataContext);
+  } = useContext(userAuthContext);
 
   const [values, setValues] = useState({
     username: "",

@@ -8,12 +8,12 @@ import { createCourseData } from "../data/createCourseData";
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 
-import { userDataContext } from "../contexts/userDataContext";
+import { userAuthContext } from "../contexts/userAuthContext";
 
 import "../css/authForm.css";
 
 export default function CreateCourse() {
-  const { userToken, isLoggedIn } = useContext(userDataContext);
+  const { userToken, isLoggedIn } = useContext(userAuthContext);
 
   const [values, setValues] = useState({
     name: "",

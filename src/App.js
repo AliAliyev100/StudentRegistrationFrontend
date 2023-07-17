@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { userDataContext } from "./contexts/userDataContext";
+import { userAuthContext } from "./contexts/userAuthContext";
 
 import Test from "./components/test";
 import { NavLink } from "react-router-dom";
@@ -22,7 +22,7 @@ function App() {
     setIsLoggedIn,
     userRole,
     setExpiryDate,
-  } = useContext(userDataContext);
+  } = useContext(userAuthContext);
 
   return (
     <div>

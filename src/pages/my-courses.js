@@ -6,12 +6,12 @@ import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 import Course from "../components/course";
 
-import { userDataContext } from "../contexts/userDataContext";
+import { userAuthContext } from "../contexts/userAuthContext";
 
 export default function MyCourses() {
   const navigate = useNavigate();
 
-  const { userId, isLoggedIn } = useContext(userDataContext);
+  const { userId, isLoggedIn } = useContext(userAuthContext);
   const { page, setPage } = useState(1);
   const [courses, setCourses] = useState([]);
 

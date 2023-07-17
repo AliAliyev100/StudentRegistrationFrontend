@@ -3,7 +3,7 @@ import "../css/formInput.css";
 
 const FormInput = (props) => {
   const [focused, setFocused] = useState(false);
-  const { label, errorMessage, onChange, id, ...inputProps } = props;
+  const { label, errorMessage, onChange, id, accept, ...inputProps } = props;
 
   const handleFocus = (e) => {
     setFocused(true);
@@ -13,7 +13,7 @@ const FormInput = (props) => {
     <div className="formInput">
       <label>{label}</label>
       {inputProps.type === "file" ? (
-        <input type="file" onChange={onChange} />
+        <input type="file" onChange={onChange} accept={accept} />
       ) : inputProps.type === "select" ? (
         <select
           {...inputProps}

@@ -1,26 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
+import Course from "../components/course";
 
 import { userAuthContext } from "../contexts/userAuthContext";
 
-import "../css/authForm.css";
-
-export default function CreateCourse() {
+export default function MyCourses() {
   const navigate = useNavigate();
 
   const { userId, isLoggedIn } = useContext(userAuthContext);
   const { page, setPage } = useState(1);
+  const [courses, setCourses] = useState([]);
 
-  const url = "http://localhost:8000/instructor/courses?" + userId + "?" + page;
+  const url = `http://localhost:8000/instructor/courses?userId=${userId}&page=${
+    page || 1
+  }`;
 
   const options = {};
   const { data, error, isLoading, fetchData } = useFetch(url, options);
 
-  fetchData();
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      setCourses(data.courses);
+    }
+  }, [data]);
 
   if (error) {
     return <ErrorComponent error={error} />;
@@ -33,5 +43,11 @@ export default function CreateCourse() {
     return null;
   }
 
-  return <div className="course-list"></div>;
+  return (
+    <div className="course-list-container">
+      {courses.map((course, index) => (
+        <Course key={index} {...course} />
+      ))}
+    </div>
+  );
 }

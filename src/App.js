@@ -2,8 +2,6 @@ import "./App.css";
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import useLocalStorage from "./hooks/useLocalStorage";
-
 import { userAuthContext } from "./contexts/userAuthContext";
 
 import Test from "./components/test";
@@ -12,6 +10,7 @@ import Courses from "./pages/courses";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import CreateCourse from "./pages/create-course";
+import MyCourses from "./pages/my-courses";
 
 function App() {
   const {
@@ -22,6 +21,7 @@ function App() {
     setUserRole,
     setIsLoggedIn,
     userRole,
+    setExpiryDate,
   } = useContext(userAuthContext);
 
   return (
@@ -113,6 +113,7 @@ function App() {
         )}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/my-courses" element={<MyCourses />} />
       </Routes>
     </div>
   );
@@ -123,6 +124,7 @@ function App() {
     setUsername("");
     setUserRole("");
     setIsLoggedIn(false);
+    setExpiryDate("");
   }
 }
 

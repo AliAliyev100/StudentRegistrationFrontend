@@ -4,7 +4,7 @@ export const createCourseData = [
     name: "name",
     type: "text",
     placeholder: "Course name",
-    errorMessage: "Course name should be 5-120 characters",
+    errorMessage: "Course name should be 3-120 characters",
     label: "Username",
     pattern: "^.{3,120}$",
     required: true,

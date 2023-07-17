@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
-export const userAuthContext = createContext();
+export const userDataContext = createContext();
 
 const LocalStorageProvider = ({ children }) => {
   const [userToken, setUserToken] = useLocalStorage("userToken", "");
@@ -31,7 +31,7 @@ const LocalStorageProvider = ({ children }) => {
   }, [expiryDate]);
 
   return (
-    <userAuthContext.Provider
+    <userDataContext.Provider
       value={{
         userToken,
         setUserToken,
@@ -48,7 +48,7 @@ const LocalStorageProvider = ({ children }) => {
       }}
     >
       {children}
-    </userAuthContext.Provider>
+    </userDataContext.Provider>
   );
 };
 

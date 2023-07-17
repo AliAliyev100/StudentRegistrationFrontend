@@ -18,8 +18,8 @@ export default function CreateCourse() {
   const [values, setValues] = useState({
     name: "",
     description: "",
-    startdate: null,
-    enddate: null,
+    startdate: Date(),
+    enddate: Date(),
     participitantLimit: 0,
     status: "Active",
   });
@@ -78,7 +78,7 @@ export default function CreateCourse() {
 
   useEffect(() => {
     if (data) {
-      //   navigate("/");
+      navigate("/my-courses");
     }
   }, [data]);
 

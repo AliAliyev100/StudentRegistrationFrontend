@@ -8,7 +8,7 @@ import { loginData } from "../data/loginData";
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 
-import { userDataContext } from "../contexts/userDataContext";
+import { userAuthContext } from "../contexts/userAuthContext";
 
 import "../css/authForm.css";
 
@@ -21,7 +21,7 @@ export default function Register() {
     isLoggedIn,
     setIsLoggedIn,
     setExpiryDate,
-  } = useContext(userDataContext);
+  } = useContext(userAuthContext);
 
   const [values, setValues] = useState({
     username: "",

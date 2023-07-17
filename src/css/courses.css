@@ -1,0 +1,21 @@
+.course-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.course-card-img {
+    height: 250px;
+}
+
+.course-card {
+    flex-basis: calc(30%);
+    max-width: 22rem;
+}
+
+@media (max-width: 70rem) {
+    .course-list-container {
+        justify-content: space-between;
+    }
+}

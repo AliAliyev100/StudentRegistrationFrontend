@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useFetch } from "../hooks/useFetch";
-import useLocalStorage from "../hooks/useLocalStorage";
 import { useNavigate, NavLink } from "react-router-dom";
 
 import FormInput from "../components/formInput";
@@ -21,6 +20,7 @@ export default function Register() {
     setUserRole,
     isLoggedIn,
     setIsLoggedIn,
+    setExpiryDate,
   } = useContext(userAuthContext);
 
   const [values, setValues] = useState({
@@ -60,6 +60,7 @@ export default function Register() {
       setUsername(data.username);
       setUserRole(data.userRole);
       setIsLoggedIn(true);
+      setExpiryDate(data.expiryDate);
       navigate("/");
     }
   }, [data]);

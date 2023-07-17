@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 export const userAuthContext = createContext();
@@ -9,6 +9,26 @@ const LocalStorageProvider = ({ children }) => {
   const [username, setUsername] = useLocalStorage("username", "");
   const [userRole, setUserRole] = useLocalStorage("userRole", "");
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
+  const [expiryDate, setExpiryDate] = useLocalStorage("expiryDate", "");
+
+  const [expiryCheckPerformed, setExpiryCheckPerformed] = useState(false);
+
+  useEffect(() => {
+    if (!expiryCheckPerformed) {
+      const currentDate = new Date();
+      const expiryDateObj = new Date(expiryDate);
+
+      if (currentDate > expiryDateObj) {
+        setUserToken("");
+        setUserId("");
+        setUsername("");
+        setUserRole("");
+        setIsLoggedIn(false);
+        setExpiryDate("");
+      }
+      setExpiryCheckPerformed(true);
+    }
+  }, [expiryDate]);
 
   return (
     <userAuthContext.Provider
@@ -23,6 +43,8 @@ const LocalStorageProvider = ({ children }) => {
         setUserRole,
         isLoggedIn,
         setIsLoggedIn,
+        expiryDate,
+        setExpiryDate,
       }}
     >
       {children}

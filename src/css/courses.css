@@ -2,20 +2,51 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 1rem;
     gap: 4rem;
 }
 
 .course-card-img {
     height: 250px;
+    min-width: 22rem;
+    padding: 1rem;
 }
 
 .course-card {
-    flex-basis: calc(30%);
     max-width: 22rem;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    border-radius: 50px;
 }
 
-@media (max-width: 70rem) {
-    .course-list-container {
-        justify-content: space-between;
-    }
+.card-title {
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.card-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: 1rem;
+}
+
+.modal-dialog {
+    max-width: 500px;
+}
+
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.modal-body {
+    font-size: 1.1rem;
+}
+
+.modal-footer {
+    justify-content: space-between;
 }

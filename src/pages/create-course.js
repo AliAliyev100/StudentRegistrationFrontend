@@ -67,8 +67,6 @@ export default function CreateCourse() {
     }));
   }, [JSON.stringify(values), file]);
 
-  // console.log(options);
-
   const { data, error, isLoading, fetchData } = useFetch(url, options);
 
   const handleSubmit = (e) => {

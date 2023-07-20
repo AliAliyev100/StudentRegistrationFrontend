@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { userAuthContext } from "../contexts/userAuthContext";
+import { useNavigate } from "react-router-dom";
 
 import "../css/courses.css";
 
@@ -8,23 +9,29 @@ const Course = ({
   name,
   description,
   imagepath,
-  numberOfParticipants,
+  students,
   limit,
   status,
   startDate,
   endDate,
   _id,
 }) => {
+  const navigate = useNavigate();
+
   const path = ("http://localhost:8000/" + imagepath).replace(/\\/g, "/");
   const formattedStartDate = startDate.slice(0, 10).replace(/-/g, "/");
   const formattedEndDate = endDate.slice(0, 10).replace(/-/g, "/");
 
-  const [participants, setParticipants] = useState(numberOfParticipants);
-  const [courseJoinable, setCourseJoinable] = useState(
-    numberOfParticipants < limit
+  const [participants, setParticipants] = useState(students.length);
+  const [courseJoinable, setCourseJoinable] = useState(students.length < limit);
+
+  const { userId, isLoggedIn, userRole } = useContext(userAuthContext);
+
+  const [isJoined, setIsJoined] = useState(
+    students.some((studentId) => studentId === userId)
   );
 
-  const { userId, isLoggedIn } = useContext(userAuthContext);
+  const isInstructor = userRole.toLowerCase() === "instructor";
 
   const options = {
     method: "POST",
@@ -34,12 +41,13 @@ const Course = ({
     }),
   };
 
-  const url = `http://localhost:8000/courses/joincourse`;
-  const { data, error, isLoading, fetchData } = useFetch(url, options);
+  const joinUrl = `http://localhost:8000/courses/joincourse`;
+  const exitUrl = `http://localhost:8000/courses/exitcourse`;
+  const { data, error, isLoading, fetchData } = useFetch(joinUrl, options);
 
   const closeButtonRef = useRef();
 
-  const handleSubmit = (e) => {
+  const handleJoinCourse = (e) => {
     e.preventDefault();
     if (closeButtonRef.current) {
       closeButtonRef.current.click();
@@ -47,10 +55,25 @@ const Course = ({
     fetchData();
   };
 
+  const handleExitCourse = (e) => {
+    e.preventDefault();
+    fetchData(exitUrl);
+  };
+
+  const handleCourseDetails = () => {
+    const courseDetailsUrl = `/courses/${_id}`;
+    navigate(courseDetailsUrl);
+  };
+
   useEffect(() => {
     if (data) {
       setParticipants(data.numberOfParticipants);
       setCourseJoinable(data.numberOfParticipants < limit);
+      if (data.exitted) {
+        setIsJoined(false);
+      } else if (data.joined) {
+        setIsJoined(true);
+      }
     }
   }, [data]);
 
@@ -58,31 +81,43 @@ const Course = ({
     <div className="card course-card">
       <img src={path} className="card-img-top course-card-img " alt={name} />
       <div className="card-body">
-        <h5 className="card-title fw-bold">{name}</h5>
-        <p className="card-text">{description}</p>
+        <h5 className="card-title fw-bold ">{name}</h5>
+        {/* <p className="card-text">{description}</p> */}
       </div>
       <ul className="list-group list-group-flush">
-        <li className="list-group-item d-flex justify-content-center">
+        <li className="list-group-item d-flex justify-content-center card-text">
           Users: {participants}/{limit}
         </li>
-        <li className="list-group-item d-flex justify-content-center">
+        <li className="list-group-item d-flex justify-content-center card-text">
           {formattedStartDate} - {formattedEndDate}
         </li>
-        <li className="list-group-item d-flex justify-content-center">
+        <li className="list-group-item d-flex justify-content-center card-text">
           Status: {capitalize(status)}
         </li>
       </ul>
       <div className="card-body d-flex justify-content-center">
-        <button type="button" className="card-link btn btn-primary">
+        <button
+          type="button"
+          className="card-link btn btn-primary"
+          onClick={handleCourseDetails}
+        >
           Course Details
         </button>
-        {isLoggedIn && courseJoinable && (
+        {isLoggedIn && courseJoinable && !isInstructor && !isJoined && (
           <button
             className="card-link btn btn-success"
             data-bs-toggle="modal"
             data-bs-target={`#exampleModal_${_id}`}
           >
             Join Course
+          </button>
+        )}
+        {isJoined && (
+          <button
+            className="card-link btn btn-danger"
+            onClick={handleExitCourse}
+          >
+            Exit Course
           </button>
         )}
       </div>
@@ -122,7 +157,7 @@ const Course = ({
               <button
                 type="button"
                 className="btn btn-success"
-                onClick={handleSubmit}
+                onClick={handleJoinCourse}
               >
                 Join Course
               </button>
@@ -135,7 +170,9 @@ const Course = ({
 };
 
 function capitalize(word) {
-  return word[0].toUpperCase() + word.substring(1).toLowerCase();
+  return (
+    word[0].toUpperCase() + word.substring(1).toLowerCase().replace("_", " is ")
+  );
 }
 
 export default Course;

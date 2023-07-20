@@ -21,7 +21,7 @@ export default function CreateCourse() {
     startdate: Date(),
     enddate: Date(),
     participitantLimit: 0,
-    status: "Active",
+    category: "",
   });
 
   const [file, setFile] = useState(null);
@@ -34,10 +34,7 @@ export default function CreateCourse() {
       const file = e.target.files[0];
       setFile(file);
     } else {
-      setValues((prevValues) => ({
-        ...prevValues,
-        [name]: value,
-      }));
+      setValues({ ...values, [name]: value });
     }
   };
 
@@ -58,7 +55,7 @@ export default function CreateCourse() {
     formData.append("startdate", values.startdate);
     formData.append("enddate", values.enddate);
     formData.append("participitantLimit", values.participitantLimit);
-    formData.append("status", values.status);
+    formData.append("category", values.category);
     formData.append("image", file);
 
     setOptions((prevOptions) => ({
@@ -104,6 +101,23 @@ export default function CreateCourse() {
             autoComplete="off"
           />
         ))}
+        <div>
+          <label>{"Description"}</label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Course Description"
+            pattern="^.{20,500}$"
+            required
+            style={{
+              width: "100%",
+              borderRadius: "0.3rem",
+              height: "5rem",
+            }}
+            onChange={onChange}
+            key={9}
+          />
+        </div>
         <button disabled={isLoading} className="create-course-button">
           Create
         </button>

@@ -12,32 +12,35 @@ export const useFetch = (url, options = {}) => {
   const memoizedOptions = useMemo(() => {
     return { ...options };
   }, [options]);
-  const fetchData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + userToken,
-        },
-        ...options,
-      });
+  const fetchData = useCallback(
+    async (fetchDataUrl) => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(fetchDataUrl || url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + userToken,
+          },
+          ...options,
+        });
 
-      const responseData = await response.json();
+        const responseData = await response.json();
 
-      if (!response.ok) {
-        throw new Error(responseData.message || "Request failed");
-      } else {
-        setData(responseData);
-        setError(null);
+        if (!response.ok) {
+          throw new Error(responseData.message || "Request failed");
+        } else {
+          setData(responseData);
+          setError(null);
+        }
+      } catch (catchedError) {
+        setError(catchedError);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (catchedError) {
-      setError(catchedError);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [url, memoizedOptions]);
+    },
+    [url, memoizedOptions]
+  );
 
   return { data, error, isLoading, fetchData };
 };

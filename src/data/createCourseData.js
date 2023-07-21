@@ -58,6 +58,7 @@ export const createCourseData = [
       },
       { value: "Design", label: "Design" },
       { value: "Teaching & Academics", label: "Teaching & Academics" },
+      { value: "Gaming", label: "Gaming" },
     ],
     errorMessage: "Choose a topic",
     required: true,

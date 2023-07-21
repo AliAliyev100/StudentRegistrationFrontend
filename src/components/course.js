@@ -23,7 +23,9 @@ const Course = ({
   const formattedEndDate = endDate.slice(0, 10).replace(/-/g, "/");
 
   const [participants, setParticipants] = useState(students.length);
-  const [courseJoinable, setCourseJoinable] = useState(students.length < limit);
+  const [courseJoinable, setCourseJoinable] = useState(
+    students.length < limit && status === "registrtation_open"
+  );
 
   const { userId, isLoggedIn, userRole } = useContext(userAuthContext);
 
@@ -68,7 +70,9 @@ const Course = ({
   useEffect(() => {
     if (data) {
       setParticipants(data.numberOfParticipants);
-      setCourseJoinable(data.numberOfParticipants < limit);
+      setCourseJoinable(
+        data.numberOfParticipants < limit && status === "registrtation_open"
+      );
       if (data.exitted) {
         setIsJoined(false);
       } else if (data.joined) {

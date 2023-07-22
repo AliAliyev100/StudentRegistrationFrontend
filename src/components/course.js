@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { userAuthContext } from "../contexts/userAuthContext";
 import { useNavigate } from "react-router-dom";
-
+import { Rate } from "antd";
 import "../css/courses.css";
 
 const Course = ({
@@ -14,10 +14,12 @@ const Course = ({
   status,
   startDate,
   endDate,
+  rating,
   _id,
+  allowrate,
+  userRating,
 }) => {
   const navigate = useNavigate();
-
   const path = ("http://localhost:8000/" + imagepath).replace(/\\/g, "/");
   const formattedStartDate = startDate.slice(0, 10).replace(/-/g, "/");
   const formattedEndDate = endDate.slice(0, 10).replace(/-/g, "/");
@@ -26,6 +28,10 @@ const Course = ({
   const [courseJoinable, setCourseJoinable] = useState(
     students.length < limit && status === "registrtation_open"
   );
+  const [courseStar, setCourseStar] = useState(() => rating);
+  const [courseNewRating, setCourseNewRating] = useState(null);
+  const [courseRated, setCourseRated] = useState(false);
+  const [courseRatable, setCourseRatable] = useState(allowrate && !userRating);
 
   const { userId, isLoggedIn, userRole } = useContext(userAuthContext);
 
@@ -35,16 +41,17 @@ const Course = ({
 
   const isInstructor = userRole.toLowerCase() === "instructor";
 
-  const options = {
+  const [options, setOptions] = useState({
     method: "POST",
     body: JSON.stringify({
-      userId: userId,
       courseId: _id,
     }),
-  };
+  });
 
   const joinUrl = `http://localhost:8000/courses/joincourse`;
   const exitUrl = `http://localhost:8000/courses/exitcourse`;
+  const rateUrl = "http://localhost:8000/courses/ratecourse";
+
   const { data, error, isLoading, fetchData } = useFetch(joinUrl, options);
 
   const closeButtonRef = useRef();
@@ -54,7 +61,7 @@ const Course = ({
     if (closeButtonRef.current) {
       closeButtonRef.current.click();
     }
-    fetchData();
+    fetchData(joinUrl);
   };
 
   const handleExitCourse = (e) => {
@@ -67,12 +74,35 @@ const Course = ({
     navigate(courseDetailsUrl);
   };
 
+  const rateCourse = (value) => {
+    setCourseRatable(false);
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      body: JSON.stringify({
+        courseId: _id,
+        star: value,
+      }),
+    }));
+    setCourseRated(true);
+  };
+
+  useEffect(() => {
+    if (courseRated) {
+      fetchData(rateUrl);
+    }
+  }, [courseRated]);
+
   useEffect(() => {
     if (data) {
-      setParticipants(data.numberOfParticipants);
-      setCourseJoinable(
-        data.numberOfParticipants < limit && status === "registrtation_open"
-      );
+      if (data.numberOfParticipants >= 0) {
+        setParticipants(data.numberOfParticipants);
+        setCourseJoinable(
+          data.numberOfParticipants < limit && status === "registrtation_open"
+        );
+      }
+      if (data.newNumRaters) {
+        setCourseNewRating(data.newRating);
+      }
       if (data.exitted) {
         setIsJoined(false);
       } else if (data.joined) {
@@ -86,7 +116,6 @@ const Course = ({
       <img src={path} className="card-img-top course-card-img " alt={name} />
       <div className="card-body">
         <h5 className="card-title fw-bold ">{name}</h5>
-        {/* <p className="card-text">{description}</p> */}
       </div>
       <ul className="list-group list-group-flush">
         <li className="list-group-item d-flex justify-content-center card-text">
@@ -97,6 +126,16 @@ const Course = ({
         </li>
         <li className="list-group-item d-flex justify-content-center card-text">
           Status: {capitalize(status)}
+        </li>
+        <li className="list-group-item d-flex justify-content-center card-text">
+          <Rate
+            allowHalf
+            disabled={!courseRatable}
+            defaultValue={
+              courseNewRating !== null ? courseNewRating : courseStar
+            }
+            onChange={rateCourse}
+          />
         </li>
       </ul>
       <div className="card-body d-flex justify-content-center">

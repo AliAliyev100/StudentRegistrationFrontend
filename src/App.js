@@ -11,6 +11,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import CreateCourse from "./pages/create-course";
 import MyCourses from "./pages/my-courses";
+import MyLearning from "./pages/my-learning";
 import CourseDetails from "./pages/CourseDetails";
 
 import "./App.css";
@@ -107,6 +108,15 @@ function App() {
                 </li>
               </>
             )}
+            {userRole === "student" && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/my-learning">
+                    My Learning
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
           <form className="d-flex ms-auto">
             <input
@@ -143,6 +153,7 @@ function App() {
 
         <Route path="/my-courses" element={<MyCourses />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/my-learning" element={<MyLearning />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/create-course" element={<CreateCourse />} />
 

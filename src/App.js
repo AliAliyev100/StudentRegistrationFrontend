@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { userAuthContext } from "./contexts/userAuthContext";
 
-import Test from "./components/test";
+import Landing from "./pages/landing";
 import { NavLink } from "react-router-dom";
 import Courses from "./pages/courses";
 import Login from "./pages/login";
@@ -31,7 +31,10 @@ function App() {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+      <nav
+        className="navbar navbar-expand-lg bg-light shadow p-3 bg-white rounded"
+        data-bs-theme="light"
+      >
         <NavLink className="navbar-brand logo" to="/"></NavLink>
         <button
           className="navbar-toggler"
@@ -149,7 +152,7 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Test />} />
+        <Route path="/" element={<Landing />} />
 
         <Route path="/my-courses" element={<MyCourses />} />
         <Route path="/courses" element={<Courses />} />

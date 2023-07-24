@@ -37,6 +37,7 @@ export default function Navbar() {
     { name: "Health and Lifestyle", value: "Health and Lifestyle" },
     { name: "Design", value: "Design" },
     { name: "Teaching and Academics", value: "Teaching and Academics" },
+    { name: "Photography", value: "Photography" },
   ];
 
   return (

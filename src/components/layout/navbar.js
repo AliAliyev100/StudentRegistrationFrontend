@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+
 import { userAuthContext } from "../../contexts/userAuthContext";
+
 import "../../App.css";
 
 export default function Navbar() {
@@ -23,6 +25,19 @@ export default function Navbar() {
     setIsLoggedIn(false);
     setExpiryDate("");
   }
+
+  const categories = [
+    {
+      name: "IT and Software Development",
+      value: "IT and Software Development",
+    },
+    { name: "Personal Development", value: "Personal Development" },
+    { name: "Music", value: "Music" },
+    { name: "Finance and Marketing", value: "Finance and Marketing" },
+    { name: "Health and Lifestyle", value: "Health and Lifestyle" },
+    { name: "Design", value: "Design" },
+    { name: "Teaching and Academics", value: "Teaching and Academics" },
+  ];
 
   return (
     <nav
@@ -57,33 +72,19 @@ export default function Navbar() {
               Categories
             </button>
             <ul className="dropdown-menu  autoClose">
-              <li>
-                <a
-                  className="dropdown-item"
-                  href="#"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  Action
-                </a>
-              </li>
-              <li>
-                <a
-                  className="dropdown-item"
-                  href="#"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  Another action
-                </a>
-              </li>
-              <li>
-                <a
-                  className="dropdown-item"
-                  href="#"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  Something else here
-                </a>
-              </li>
+              {categories.map((action, index) => (
+                <li key={index}>
+                  <NavLink
+                    className="nav-link"
+                    aria-current="page"
+                    to={`/courses/category/${action.value
+                      .toLowerCase()
+                      .replace(/ /g, "-")}`}
+                  >
+                    {action.name}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </li>
           <li className="nav-item">

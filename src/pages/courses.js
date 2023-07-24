@@ -1,23 +1,33 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { ConfigProvider, Pagination } from "antd";
+import { Pagination } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
 
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 import Course from "../components/course";
 
 export const Courses = () => {
+  const { categoryName } = useParams();
+  const navigate = useNavigate();
+
   const [page, setPage] = useState(1);
   const [courses, setCourses] = useState([]);
   const [pageCount, setPageCount] = useState(1);
 
-  const baseURL = "http://localhost:8000/courses?page=";
+  const baseURL = !categoryName
+    ? "http://localhost:8000/courses?page="
+    : `http://localhost:8000/courses/category/${categoryName}?page=`;
 
   const { data, error, isLoading, fetchData } = useFetch(baseURL + page, {});
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setPage(1);
+  }, [categoryName]);
 
   useEffect(() => {
     if (data) {
@@ -28,7 +38,12 @@ export const Courses = () => {
 
   useEffect(() => {
     fetchData(baseURL + page);
-  }, [page]);
+    if (categoryName) {
+      navigate(`/courses/category/${categoryName}?page=${page}`);
+    } else {
+      navigate(`/courses/?page=${page}`);
+    }
+  }, [categoryName, page]);
 
   if (error) {
     return <ErrorComponent error={error} />;

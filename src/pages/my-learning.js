@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
-import { ConfigProvider, Pagination } from "antd";
+import { Pagination } from "antd";
 
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 import Course from "../components/course";
 
-import { userAuthContext } from "../contexts/userAuthContext";
+import { useAuth } from "../contexts/userAuthContext";
 
 export const MyLearning = () => {
   const navigate = useNavigate();
 
-  const { userId, isLoggedIn } = useContext(userAuthContext);
+  const { userId, isLoggedIn } = useAuth();
   const [page, setPage] = useState(1);
   const [courses, setCourses] = useState([]);
   const [pageCount, setPageCount] = useState(1);

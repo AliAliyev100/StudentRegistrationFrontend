@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { userAuthContext } from "../contexts/userAuthContext";
+import { useAuth } from "../contexts/userAuthContext";
 import { useFetch } from "../hooks/useFetch";
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
@@ -16,7 +16,7 @@ export const CourseDetails = () => {
     setIsLoggedIn,
     userRole,
     setExpiryDate,
-  } = useContext(userAuthContext);
+  } = useAuth();
 
   const { courseId } = useParams();
 

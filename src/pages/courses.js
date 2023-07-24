@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { Pagination } from "antd";
 import { useParams, useNavigate } from "react-router-dom";

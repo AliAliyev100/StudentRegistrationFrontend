@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect} from "react";
 import { useFetch } from "../hooks/useFetch";
 import { useNavigate, NavLink } from "react-router-dom";
 
@@ -8,12 +8,12 @@ import { createCourseData } from "../data/createCourseData";
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 
-import { userAuthContext } from "../contexts/userAuthContext";
+import { useAuth } from "../contexts/userAuthContext";
 
 import "../css/authForm.css";
 
 export const CreateCourse = () => {
-  const { userToken, isLoggedIn } = useContext(userAuthContext);
+  const { userToken, isLoggedIn } = useAuth();
 
   const [values, setValues] = useState({
     name: "",

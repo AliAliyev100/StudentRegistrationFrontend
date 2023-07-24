@@ -1,9 +1,9 @@
-import { useState, useContext, useCallback, useMemo } from "react";
-
-import { userAuthContext } from "../contexts/userAuthContext";
+import { useState,  useCallback, useMemo } from "react";
+import { useAuth } from "../contexts/userAuthContext";
+// import { userAuthContext } from "../contexts/userAuthContext";
 
 export const useFetch = (url, options = {}) => {
-  const { userToken } = useContext(userAuthContext);
+  const { userToken } = useAuth();
 
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -12,6 +12,7 @@ export const useFetch = (url, options = {}) => {
   const memoizedOptions = useMemo(() => {
     return { ...options };
   }, [options]);
+
   const fetchData = useCallback(
     async (fetchDataUrl) => {
       try {

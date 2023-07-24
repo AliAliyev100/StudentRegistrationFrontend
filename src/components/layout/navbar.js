@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { userAuthContext } from "../../contexts/userAuthContext";
+import { useAuth, userAuthContext } from "../../contexts/userAuthContext";
 
 import "../../App.css";
 
@@ -15,7 +15,7 @@ export default function Navbar() {
     setIsLoggedIn,
     userRole,
     setExpiryDate,
-  } = useContext(userAuthContext);
+  } = useAuth();
 
   function handleLogout() {
     setUserToken("");

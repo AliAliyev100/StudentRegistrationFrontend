@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { userAuthContext } from "../contexts/userAuthContext";
+import { useAuth } from "../contexts/userAuthContext";
 import { useNavigate } from "react-router-dom";
 import { Rate } from "antd";
 import "../css/courses.css";
@@ -33,7 +33,7 @@ const Course = ({
   const [courseRated, setCourseRated] = useState(false);
   const [courseRatable, setCourseRatable] = useState(allowrate && !userRating);
 
-  const { userId, isLoggedIn, userRole } = useContext(userAuthContext);
+  const { userId, isLoggedIn, userRole } = useAuth();
 
   const [isJoined, setIsJoined] = useState(
     students.some((studentId) => studentId === userId)

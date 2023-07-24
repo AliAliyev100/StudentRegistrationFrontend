@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { useNavigate, NavLink } from "react-router-dom";
 
-import { userAuthContext } from "../contexts/userAuthContext";
+import { useAuth } from "../contexts/userAuthContext";
 
 import FormInput from "../components/formInput";
 import { registerData } from "../data/registerData";
@@ -20,7 +20,7 @@ export const Register = () => {
     setUserRole,
     isLoggedIn,
     setIsLoggedIn,
-  } = useContext(userAuthContext);
+  } = useAuth();
 
   const [values, setValues] = useState({
     username: "",

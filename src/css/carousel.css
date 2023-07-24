@@ -18,3 +18,33 @@
     margin-left: 10px;
     margin-top: 20px;
 }
+
+.carousel-content-below {
+    display: none;
+    margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    .carousel-content {
+        display: none;
+    }
+
+    .carousel-content-below {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .carousel-content-below h3 {
+        padding-top: 10px;
+        font-weight: bold;
+        font-family: sans-serif;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .carousel-content-below .nav-link {
+        margin-left: 10px;
+        margin-top: 20px;
+        padding-bottom: 1rem;
+    }
+}

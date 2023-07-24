@@ -13,7 +13,6 @@ export default function Landing() {
     backgroundPosition: "center",
     display: "flex",
     alignItems: "center",
-    boxShadow: "0 4px 20px black",
     height: "40vh",
   };
 
@@ -25,29 +24,40 @@ export default function Landing() {
     backgroundPosition: "center",
     display: "flex",
     alignItems: "center",
-    boxShadow: "0 4px 20px black",
     height: "40vh",
   };
 
   const onChange = (currentSlide) => {};
 
   return (
-    <div
-      className="landing-container"
-      style={{ margin: "0 auto", maxWidth: "1200px" }}
-    >
-      <Carousel afterChange={onChange}>
+    <div>
+      <Carousel
+        afterChange={onChange}
+        autoplay
+        effect="fade"
+        style={{
+          margin: "0 auto",
+          maxWidth: "1200px",
+          boxShadow: "0 4px 20px gray",
+        }}
+      >
         <div>
           <div style={contentStyle1}>
             <div className="carousel-content">
               <h3>
-                Join the community to enhance
-                <br /> your skills
+                Join the Community to Enhance
+                <br /> Your Skills!
               </h3>
               <NavLink className="nav-link" to="/register">
                 <button className="btn btn-dark">Sign Up</button>
               </NavLink>
             </div>
+          </div>
+          <div className="carousel-content-below">
+            <h3>Join the Community to Enhance Your Skills!</h3>
+            <NavLink className="nav-link" to="/register">
+              <button className="btn btn-dark">Sign Up</button>
+            </NavLink>
           </div>
         </div>
         <div>
@@ -62,6 +72,12 @@ export default function Landing() {
                 <button className="btn btn-dark">Courses</button>
               </NavLink>
             </div>
+          </div>
+          <div className="carousel-content-below">
+            <h3>Embark on Your Learning Journey Today!</h3>
+            <NavLink className="nav-link" to="/register">
+              <button className="btn btn-dark">Courses</button>
+            </NavLink>
           </div>
         </div>
       </Carousel>

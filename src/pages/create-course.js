@@ -12,7 +12,7 @@ import { userAuthContext } from "../contexts/userAuthContext";
 
 import "../css/authForm.css";
 
-export default function CreateCourse() {
+export const CreateCourse = () => {
   const { userToken, isLoggedIn } = useContext(userAuthContext);
 
   const [values, setValues] = useState({
@@ -124,4 +124,4 @@ export default function CreateCourse() {
       </form>
     </div>
   );
-}
+};

@@ -12,7 +12,7 @@ import Loading from "../components/loading";
 
 import "../css/authForm.css";
 
-export default function Register() {
+export const Register = () => {
   const {
     setUserToken,
     setUserId,
@@ -111,4 +111,4 @@ export default function Register() {
       </form>
     </div>
   );
-}
+};

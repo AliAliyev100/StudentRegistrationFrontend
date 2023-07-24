@@ -6,7 +6,7 @@ import { useFetch } from "../hooks/useFetch";
 import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 
-export default function CourseDetails() {
+export const CourseDetails = () => {
   const {
     isLoggedIn,
     setUserToken,
@@ -39,4 +39,4 @@ export default function CourseDetails() {
   }
 
   return <div>CourseDetails</div>;
-}
+};

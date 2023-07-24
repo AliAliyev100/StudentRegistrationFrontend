@@ -9,7 +9,7 @@ import Course from "../components/course";
 
 import { userAuthContext } from "../contexts/userAuthContext";
 
-export default function MyCourses() {
+export const MyCourses = () => {
   const navigate = useNavigate();
 
   const { userId, isLoggedIn } = useContext(userAuthContext);
@@ -65,4 +65,4 @@ export default function MyCourses() {
       </div>
     </div>
   );
-}
+};

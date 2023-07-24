@@ -6,7 +6,7 @@ import ErrorComponent from "../components/ErrorComponent";
 import Loading from "../components/loading";
 import Course from "../components/course";
 
-export default function Courses() {
+export const Courses = () => {
   const [page, setPage] = useState(1);
   const [courses, setCourses] = useState([]);
   const [pageCount, setPageCount] = useState(1);
@@ -54,4 +54,4 @@ export default function Courses() {
       </div>
     </div>
   );
-}
+};

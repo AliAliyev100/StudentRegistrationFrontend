@@ -12,7 +12,7 @@ import { userAuthContext } from "../contexts/userAuthContext";
 
 import "../css/authForm.css";
 
-export default function Register() {
+export const Login = () => {
   const {
     setUserToken,
     setUserId,
@@ -98,4 +98,4 @@ export default function Register() {
       </form>
     </div>
   );
-}
+};

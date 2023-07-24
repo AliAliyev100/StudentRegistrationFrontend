@@ -2,155 +2,23 @@ import "./App.css";
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { userAuthContext } from "./contexts/userAuthContext";
+import {
+  Landing,
+  Courses,
+  Login,
+  Register,
+  CreateCourse,
+  MyCourses,
+  MyLearning,
+  CourseDetails,
+} from "./pages";
 
-import Landing from "./pages/landing";
-import { NavLink } from "react-router-dom";
-import Courses from "./pages/courses";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import CreateCourse from "./pages/create-course";
-import MyCourses from "./pages/my-courses";
-import MyLearning from "./pages/my-learning";
-import CourseDetails from "./pages/CourseDetails";
-
-import "./App.css";
-import Categories from "./pages/categories";
+import Navbar from "./components/layout/navbar";
 
 function App() {
-  const {
-    isLoggedIn,
-    setUserToken,
-    setUserId,
-    setUsername,
-    setUserRole,
-    setIsLoggedIn,
-    userRole,
-    setExpiryDate,
-  } = useContext(userAuthContext);
-
   return (
     <div>
-      <nav
-        className="navbar navbar-expand-lg bg-light shadow p-3 bg-white rounded"
-        data-bs-theme="light"
-      >
-        <NavLink className="navbar-brand logo" to="/"></NavLink>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink className="nav-link" aria-current="page" to="/">
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item dropdown">
-              <button
-                className="btn  dropdown-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Categories
-              </button>
-              <ul className="dropdown-menu  autoClose">
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    style={{ backgroundColor: "transparent" }}
-                  >
-                    Action
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    style={{ backgroundColor: "transparent" }}
-                  >
-                    Another action
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    style={{ backgroundColor: "transparent" }}
-                  >
-                    Something else here
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/courses">
-                All Courses
-              </NavLink>
-            </li>
-            {userRole === "instructor" && (
-              <>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/my-courses">
-                    My Courses
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/create-course">
-                    Create a Course
-                  </NavLink>
-                </li>
-              </>
-            )}
-            {userRole === "student" && (
-              <>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/my-learning">
-                    My Learning
-                  </NavLink>
-                </li>
-              </>
-            )}
-          </ul>
-          <form className="d-flex ms-auto">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-primary" type="submit">
-              Search
-            </button>
-          </form>
-          <div className="navbar-nav ms-auto auth-elements">
-            {!isLoggedIn ? (
-              <>
-                <NavLink className="nav-link" to="/login">
-                  Log In
-                </NavLink>
-                <NavLink className="nav-link" to="/register">
-                  Sign Up
-                </NavLink>
-              </>
-            ) : (
-              <button className="nav-link" onClick={handleLogout}>
-                Logout
-              </button>
-            )}
-          </div>
-        </div>
-      </nav>
-
+      <Navbar />
       <Routes>
         <Route path="/" element={<Landing />} />
 
@@ -165,15 +33,6 @@ function App() {
       </Routes>
     </div>
   );
-
-  function handleLogout() {
-    setUserToken("");
-    setUserId("");
-    setUsername("");
-    setUserRole("");
-    setIsLoggedIn(false);
-    setExpiryDate("");
-  }
 }
 
 export default App;

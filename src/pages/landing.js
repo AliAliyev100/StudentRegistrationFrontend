@@ -3,8 +3,11 @@ import { Carousel } from "antd";
 import { NavLink } from "react-router-dom";
 import "../App.css";
 import "../css/carousel.css";
+import { useAuth } from "../contexts/userAuthContext";
 
 export const Landing = () => {
+  const { isLoggedIn } = useAuth();
+
   const contentStyle1 = {
     backgroundImage:
       "url(https://img.freepik.com/free-photo/group-diverse-people-having-business-meeting_53876-25060.jpg?w=1380&t=st=1690064839~exp=1690065439~hmac=fd6468d9e65479c6665b11705a8118ce622470c02dce70e9aa6655b1cac7ec05)",
@@ -43,7 +46,40 @@ export const Landing = () => {
       >
         <div>
           <div style={contentStyle1}>
-            <div className="carousel-content">
+            {isLoggedIn ? (
+              <div className="carousel-content">
+                <h3>
+                  Continue learning to Enhance
+                  <br /> Your Skills!
+                </h3>
+                <NavLink className="nav-link" to="/my-learning">
+                  <button className="btn btn-dark">My Learning</button>
+                </NavLink>
+              </div>
+            ) : (
+              <div className="carousel-content">
+                <h3>
+                  Join the Community to Enhance
+                  <br /> Your Skills!
+                </h3>
+                <NavLink className="nav-link" to="/register">
+                  <button className="btn btn-dark">Sign Up</button>
+                </NavLink>
+              </div>
+            )}
+          </div>
+          {isLoggedIn ? (
+            <div className="carousel-content-below">
+              <h3>
+                Continue learning to Enhance
+                <br /> Your Skills!
+              </h3>
+              <NavLink className="nav-link" to="/my-learning">
+                <button className="btn btn-dark">My Learning</button>
+              </NavLink>
+            </div>
+          ) : (
+            <div className="carousel-content-below">
               <h3>
                 Join the Community to Enhance
                 <br /> Your Skills!
@@ -52,13 +88,7 @@ export const Landing = () => {
                 <button className="btn btn-dark">Sign Up</button>
               </NavLink>
             </div>
-          </div>
-          <div className="carousel-content-below">
-            <h3>Join the Community to Enhance Your Skills!</h3>
-            <NavLink className="nav-link" to="/register">
-              <button className="btn btn-dark">Sign Up</button>
-            </NavLink>
-          </div>
+          )}
         </div>
         <div>
           <div style={contentStyle2}>

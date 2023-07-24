@@ -1,13 +1,12 @@
-import React from "react";
 import { Carousel } from "antd";
 import { NavLink } from "react-router-dom";
-import "../App.css";
-import "../css/carousel.css";
-import { useAuth } from "../contexts/userAuthContext";
 
-export const Landing = () => {
-  const { isLoggedIn } = useAuth();
+import { useAuth } from "../../../contexts/userAuthContext";
 
+import "../../../App.css";
+import "../../../css/carousel.css";
+
+export const CustomCarousel = () => {
   const contentStyle1 = {
     backgroundImage:
       "url(https://img.freepik.com/free-photo/group-diverse-people-having-business-meeting_53876-25060.jpg?w=1380&t=st=1690064839~exp=1690065439~hmac=fd6468d9e65479c6665b11705a8118ce622470c02dce70e9aa6655b1cac7ec05)",
@@ -30,12 +29,11 @@ export const Landing = () => {
     height: "40vh",
   };
 
-  const onChange = (currentSlide) => {};
+  const { isLoggedIn } = useAuth();
 
   return (
     <div>
       <Carousel
-        afterChange={onChange}
         autoplay
         effect="fade"
         style={{

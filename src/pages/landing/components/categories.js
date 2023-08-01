@@ -73,10 +73,11 @@ export const Categories = () => {
   };
 
   const headerStyle = {
-    textAlign: "center",
+    // textAlign: "center",
+    maxWidth: "1200px",
     fontWeight: "bold",
     fontFamily: "monospace",
-    marginTop: "5rem",
+    margin: "5rem auto 0",
   };
 
   return (

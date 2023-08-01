@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAuth } from "../contexts/userAuthContext";
-import { useFetch } from "../hooks/useFetch";
-import ErrorComponent from "../components/ErrorComponent";
-import Loading from "../components/loading";
+import { useAuth } from "../../contexts/userAuthContext";
+import { useFetch } from "../../hooks/useFetch";
+import ErrorComponent from "../../components/ErrorComponent";
+import Loading from "../../components/loading";
 
 export const CourseDetails = () => {
   const {

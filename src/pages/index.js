@@ -5,4 +5,4 @@ export * from "./register";
 export * from "./create-course";
 export * from "./my-courses";
 export * from "./my-learning";
-export * from "./CourseDetails";
+export * from "./course-details";

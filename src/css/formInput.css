@@ -21,7 +21,7 @@ label {
   color: gray;
 }
 
-span {
+.errorMessage {
   font-size: 12px;
   padding: 3px;
   color: red;

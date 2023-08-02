@@ -6,6 +6,8 @@ import { useFetch } from "../../hooks/useFetch";
 import ErrorComponent from "../../components/ErrorComponent";
 import Loading from "../../components/loading";
 
+import Menu from "./components/menu";
+
 export const CourseDetails = () => {
   const {
     isLoggedIn,
@@ -29,8 +31,12 @@ export const CourseDetails = () => {
   }, []);
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
+
+  const handleTabChange = (selectedTabKey) => {
+    console.log("Selected Tab Key:", selectedTabKey);
+  };
 
   if (error) {
     return <ErrorComponent error={error} />;
@@ -38,5 +44,5 @@ export const CourseDetails = () => {
     return <Loading />;
   }
 
-  return <div>CourseDetails</div>;
+  return <div>{<Menu onTabChange={handleTabChange} />}</div>;
 };

@@ -31,40 +31,27 @@ const items = [
 ];
 const MenuComponent = ({ onTabChange }) => {
   const [collapsed, setCollapsed] = useState(true);
-  const [selectedTab, setSelectedTab] = useState("1");
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
   const handleTabSelect = (e) => {
-    setSelectedTab(e.key);
     onTabChange(e.key);
   };
 
   return (
     <div
       style={{
-        width: 256,
+        width: 200,
       }}
     >
-      <Button
-        type="primary"
-        onClick={toggleCollapsed}
-        style={{
-          marginBottom: 16,
-          marginTop: 10,
-          backgroundColor: "black",
-        }}
-      >
-        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      </Button>
       <Menu
         mode="inline"
         theme="dark"
-        inlineCollapsed={collapsed}
         items={items}
         defaultSelectedKeys={["1"]}
         onSelect={handleTabSelect}
+        style={{ height: "95vh" }}
       />
     </div>
   );

@@ -13,30 +13,35 @@ export const Categories = () => {
       name: "IT & Software Development",
       value: "IT and Software Development",
       imageUrl: "",
+      key: 1,
     },
     {
       name: "Personal Development",
       value: "Personal Development",
       imageUrl: "",
+      key: 2,
     },
-    { name: "Music", value: "Music", imageUrl: "" },
+    { name: "Music", value: "Music", imageUrl: "", key: 3 },
     {
       name: "Finance & Marketing",
       value: "Finance and Marketing",
       imageUrl: "",
+      key: 4,
     },
     {
       name: "Health & Lifestyle",
       value: "Health and Lifestyle",
       imageUrl: "",
+      key: 5,
     },
-    { name: "Design", value: "Design", imageUrl: "" },
+    { name: "Design", value: "Design", imageUrl: "", key: 6 },
     {
       name: "Teaching & Academics",
       value: "Teaching and Academics",
       imageUrl: "",
+      key: 7,
     },
-    { name: "Photography", value: "Photography", imageUrl: "" },
+    { name: "Photography", value: "Photography", imageUrl: "", key: 8 },
   ];
 
   const listStyle = {
@@ -85,8 +90,8 @@ export const Categories = () => {
       <h1 style={headerStyle}>Categories</h1>
       <div style={listStyle}>
         {categories.map((category, index) => (
-          <div>
-            <div style={categoryStyle} key={index}>
+          <div key={category.key}>
+            <div style={categoryStyle}>
               <NavLink
                 to={`/courses/category/${normalizeCategoryValue(
                   category.value
@@ -104,7 +109,9 @@ export const Categories = () => {
                 />
               </NavLink>
             </div>
-            <h5 style={imageTextStyle}>{category.name}</h5>
+            <h5 style={imageTextStyle}>
+              {category.name} {index}
+            </h5>
           </div>
         ))}
       </div>

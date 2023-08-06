@@ -57,7 +57,7 @@ export const CourseDetails = () => {
         setTab(<Home />);
         break;
       case "3":
-        setTab(<Announcements />);
+        setTab(<Announcements width={width} />);
         break;
     }
   };
@@ -75,7 +75,15 @@ export const CourseDetails = () => {
           <div>
             <MobileTab onTabChange={handleTabChange} />
           </div>
-          <div>{tab}</div>
+          <div
+            style={{
+              padding: "24px",
+              backgroundColor: "lightgray",
+              height: "95vh",
+            }}
+          >
+            {tab}
+          </div>
         </div>
       ) : (
         <Layout style={{ display: "grid", gridTemplateColumns: "200px 1fr" }}>

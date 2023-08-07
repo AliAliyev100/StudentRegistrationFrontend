@@ -69,7 +69,7 @@ export const CourseDetails = () => {
   }
 
   return (
-    <>
+    <div>
       {width < 500 ? (
         <div>
           <div>
@@ -79,30 +79,30 @@ export const CourseDetails = () => {
             style={{
               padding: "24px",
               backgroundColor: "lightgray",
-              height: "95vh",
+              height: "100vh",
+              overflowY: "auto",
             }}
           >
             {tab}
           </div>
         </div>
       ) : (
-        <Layout style={{ display: "grid", gridTemplateColumns: "200px 1fr" }}>
-          <div style={{ background: "#fff" }}>
-            <Sider>
-              <MenuComponent onTabChange={handleTabChange} />
-            </Sider>
+        <div style={{ display: "grid", gridTemplateColumns: "200px 1fr" }}>
+          <div>
+            <MenuComponent onTabChange={handleTabChange} />
           </div>
           <div
             style={{
               padding: "24px",
               backgroundColor: "lightgray",
               height: "95vh",
+              overflowY: "auto",
             }}
           >
             {tab}
           </div>
-        </Layout>
+        </div>
       )}
-    </>
+    </div>
   );
 };

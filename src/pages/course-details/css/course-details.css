@@ -1,0 +1,11 @@
+.ant-tabs-dropdown-menu-item>span span {
+    padding-right: 0.5rem;
+}
+
+.ql-font-serif {
+    font-family: Georgia, Times New Roman, serif;
+}
+
+.ql-font-monospace {
+    font-family: Monaco, Courier New, monospace;
+}

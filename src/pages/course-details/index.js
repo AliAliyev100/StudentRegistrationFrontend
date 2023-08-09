@@ -10,6 +10,7 @@ import MenuComponent from "./components/menu";
 import MobileTab from "./components/mobileTab";
 import Home from "./components/home";
 import Announcements from "./components/announcements";
+import CourseInformation from "./components/course-information";
 
 import { Layout } from "antd";
 
@@ -56,6 +57,9 @@ export const CourseDetails = () => {
       case "1":
         setTab(<Home />);
         break;
+      case "2":
+        setTab(<CourseInformation />);
+        break;
       case "3":
         setTab(<Announcements width={width} />);
         break;
@@ -94,7 +98,6 @@ export const CourseDetails = () => {
           <div
             style={{
               padding: "24px",
-              backgroundColor: "lightgray",
               height: "95vh",
               overflowY: "auto",
             }}

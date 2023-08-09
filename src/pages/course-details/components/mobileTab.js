@@ -9,7 +9,7 @@ import {
   BarChartOutlined,
 } from "@ant-design/icons";
 import { Tabs } from "antd";
-import "./course-details.css";
+import "../css/course-details.css";
 
 const MobileTab = ({ onTabChange }) => {
   function getItem(label, key, icon, children, type) {

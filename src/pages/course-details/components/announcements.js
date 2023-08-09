@@ -6,11 +6,9 @@ import { useFetch } from "../../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 const { Meta } = Card;
 
-const createUrl = "http://localhost:8000/instructor/create-announcement";
-
 const AnnouncementsComponent = ({ width }) => {
   const { courseId } = useParams();
-
+  const createUrl = `http://localhost:8000/instructor/${courseId}/create-announcement`;
   const getUrl = `http://localhost:8000/courses/${courseId}/announcements`;
 
   const { userToken, isLoggedIn } = useAuth();
@@ -43,7 +41,6 @@ const AnnouncementsComponent = ({ width }) => {
       body: JSON.stringify({
         title: modalValues.title,
         content: modalValues.content,
-        courseId: courseId,
       }),
       method: "POST",
     }));

@@ -11,6 +11,7 @@ import MobileTab from "./components/mobileTab";
 import Home from "./components/home";
 import Announcements from "./components/announcements";
 import CourseInformation from "./components/course-information";
+import Quizzes from "./components/quizzes";
 
 import { Layout } from "antd";
 
@@ -62,6 +63,9 @@ export const CourseDetails = () => {
         break;
       case "3":
         setTab(<Announcements width={width} />);
+        break;
+      case "8":
+        setTab(<Quizzes />);
         break;
     }
   };

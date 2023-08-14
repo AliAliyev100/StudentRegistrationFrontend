@@ -7,6 +7,7 @@ import {
   CommentOutlined,
   CopyOutlined,
   BarChartOutlined,
+  EditOutlined
 } from "@ant-design/icons";
 import { Tabs } from "antd";
 import "../css/course-details.css";
@@ -30,6 +31,7 @@ const MobileTab = ({ onTabChange }) => {
     getItem("Discussions", "5", <CommentOutlined />),
     getItem("Assignments", "6", <CopyOutlined />),
     getItem("My Grades", "7", <BarChartOutlined />),
+    getItem("Quizzes", "8", <EditOutlined />),
   ];
 
   const handleTabSelect = (key) => {

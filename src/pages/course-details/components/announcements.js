@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { Card, List, Modal, Button, Form, Input } from "antd";
-import { NewAnnouncementForm } from "./new-announcement-form";
+import { NewAnnouncementForm } from "../atoms/new-announcement-form";
 import { useAuth } from "../../../contexts/userAuthContext";
 import { useFetch } from "../../../hooks/useFetch";
 import { useParams } from "react-router-dom";

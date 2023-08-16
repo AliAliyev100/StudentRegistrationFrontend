@@ -10,16 +10,21 @@ import {
   DatePicker,
   InputNumber,
   TimePicker,
-  Button,
+  Checkbox,
 } from "antd";
 
 const createQuizUrl = "http://localhost:8000/instructor/create-quiz";
 
-function QuizModal({ visible, onCreate, onCancel }) {
+function QuizModal({ visible, onCreate, onCancel, setQuizId }) {
   const { userToken, isLoggedIn } = useAuth();
   const { courseId } = useParams();
 
-  const [quizValues, setQuizValues] = useState({ courseId: courseId });
+  const [quizValues, setQuizValues] = useState({
+    courseId: courseId,
+    backtrackingAllowed: false,
+    resultsVisible: false,
+    answersAvailable: false,
+  });
 
   const [options, setOptions] = useState({
     method: "POST",
@@ -44,9 +49,11 @@ function QuizModal({ visible, onCreate, onCancel }) {
   };
 
   const handleQuizValuesChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value, type, checked } = e.target;
 
-    if (id === "quizDuration") {
+    if (type === "checkbox") {
+      setQuizValues({ ...quizValues, [id]: checked });
+    } else if (id === "quizDuration") {
       if (isValidTimeFormat(value)) {
         setQuizValues({ ...quizValues, [id]: value });
       }
@@ -107,6 +114,12 @@ function QuizModal({ visible, onCreate, onCancel }) {
       body: JSON.stringify(quizValues),
     }));
   }, [quizValues]);
+
+  useEffect(() => {
+    if (data && data.quizId) {
+      setQuizId(data.quizId);
+    }
+  }, [data]);
 
   return (
     <Modal
@@ -213,6 +226,27 @@ function QuizModal({ visible, onCreate, onCancel }) {
             step={1}
             onChange={(value) => handleInputNumberChange("contribution", value)}
           />
+        </Form.Item>
+        <Form.Item
+          name="backtrackingAllowed"
+          label="Backtracking Allowed"
+          valuePropName="checked"
+        >
+          <Checkbox />
+        </Form.Item>
+        <Form.Item
+          name="resultsVisible"
+          label="Results Visible"
+          valuePropName="checked"
+        >
+          <Checkbox />
+        </Form.Item>
+        <Form.Item
+          name="answersAvailable"
+          label="Answers Available"
+          valuePropName="checked"
+        >
+          <Checkbox />
         </Form.Item>
       </Form>
     </Modal>

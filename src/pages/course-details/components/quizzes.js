@@ -7,6 +7,7 @@ function Quizzes() {
   const [isQuizModalVisible, setIsQuizModalVisible] = useState(false);
   const [isQuestionModalVisible, setIsQuestionModalVisible] = useState(false);
   const [quizInfo, setQuizInfo] = useState(null);
+  const [quizId, setQuizId] = useState(null);
 
   const showQuizModal = () => {
     setIsQuizModalVisible(true);
@@ -24,7 +25,7 @@ function Quizzes() {
   };
 
   const handleQuestionCreate = (question) => {
-    console.log(question)
+    console.log(question);
   };
 
   const handleQuestionCancel = () => {
@@ -40,12 +41,14 @@ function Quizzes() {
         visible={isQuizModalVisible}
         onCreate={handleQuizCreate}
         onCancel={handleQuizCancel}
+        setQuizId={setQuizId}
       />
       <QuestionModal
-        visible={isQuestionModalVisible}
+        visible={isQuestionModalVisible && quizId !== null}
         quizInfo={quizInfo}
         onQuestionCreate={handleQuestionCreate}
         onCancel={handleQuestionCancel}
+        quizId={quizId}
       />
     </div>
   );

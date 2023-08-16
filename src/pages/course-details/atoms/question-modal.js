@@ -3,7 +3,13 @@ import { Modal, Form, Input, Select, Button, Checkbox, Radio } from "antd";
 
 const { Option } = Select;
 
-function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
+function QuestionModal({
+  visible,
+  quizInfo,
+  onQuestionCreate,
+  onCancel,
+  quizId,
+}) {
   const [form] = Form.useForm();
   const [questionType, setQuestionType] = useState("");
   const [ignoreCase, setIgnoreCase] = useState(false);
@@ -150,6 +156,7 @@ function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
             ))}
 
             <Button onClick={handleAddAnswer}>Add Another Answer</Button>
+            <h1></h1>
           </>
         )}
         {questionType === "single" && (
@@ -190,7 +197,6 @@ function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
               </div>
             ))}
             <Button onClick={handleAddAnswer}>Add Another Answer</Button>
-            <Button>Previous Question</Button>
           </>
         )}
       </Form>

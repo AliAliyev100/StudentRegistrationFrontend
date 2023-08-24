@@ -1,41 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Select, Button, Checkbox, Radio } from "antd";
 
-const { Option } = Select;
+import { useFetch } from "../../../hooks/useFetch";
+import { useAuth } from "../../../contexts/userAuthContext";
 
-function QuestionModal({
-  visible,
-  quizInfo,
-  onQuestionCreate,
-  onCancel,
-  quizId,
-}) {
+const { Option } = Select;
+const baseURL = `http://localhost:8000/instructor/add-quiz-question`;
+
+function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
+  const { userToken } = useAuth();
+
   const [form] = Form.useForm();
   const [questionType, setQuestionType] = useState("");
   const [ignoreCase, setIgnoreCase] = useState(false);
-  const [multipleAnswerValues, setMultipleAnswerValues] = useState([
-    { text: "", isTrue: false },
-  ]);
+  const [multipleAnswerValues, setMultipleAnswerValues] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(
+    quizInfo.questions.length + 1 || 1
+  );
+
+  const [options, setOptions] = useState({
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + userToken,
+      "Content-Type": "application/json",
+    },
+    body: null,
+  });
+
+  const [questionValues, setQuestionValues] = useState({
+    quizId: quizInfo._id,
+  });
+
+  const { data, error, isLoading, fetchData } = useFetch(baseURL, options);
 
   const onFinish = (values) => {
-    const questionData = {
-      ...values,
-      questionType,
-      ignoreCase,
-      answers: multipleAnswerValues,
-      quizId: quizInfo.id,
-    };
-    onQuestionCreate(questionData);
+    // onQuestionCreate(formData);
+    fetchData();
     form.resetFields();
+    setQuestionValues({ quizId: quizInfo._id });
     setQuestionType("");
     setIgnoreCase(false);
-    setMultipleAnswerValues([{ text: "", isTrue: false }]);
+    setMultipleAnswerValues([]);
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      body: {},
+    }));
+  };
+
+  const handleQuestionValuesChange = (e) => {
+    const { id, value, type, checked } = e.target;
+
+    if (type === "checkbox" && id.length > 0) {
+      setQuestionValues({ ...questionValues, [id]: checked });
+    } else if (type === "text") {
+      if (id === "answers") {
+        setQuestionValues({ ...questionValues, [id]: value.split(",") });
+      } else if (id === "question") {
+        setQuestionValues({ ...questionValues, [id]: value });
+      }
+    }
   };
 
   const handleQuestionTypeChange = (value) => {
     setQuestionType(value);
     setIgnoreCase(false);
     setMultipleAnswerValues([{ text: "", isTrue: false }]);
+    setQuestionValues({ ...questionValues, questionType: value });
   };
 
   const handleAddAnswer = () => {
@@ -64,10 +94,26 @@ function QuestionModal({
     setMultipleAnswerValues(updatedAnswers);
   };
 
+  useEffect(() => {
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      body: JSON.stringify({
+        ...(questionType === "open" ? {} : { variants: multipleAnswerValues }), // Only include variants if not "open"
+        ...questionValues,
+      }),
+    }));
+  }, [questionType, questionValues, multipleAnswerValues]);
+
+  useEffect(() => {
+    if (data && data.nextQuestionIndex) {
+      setCurrentIndex(data.nextQuestionIndex);
+    }
+  }, [data]);
+
   return (
     <Modal
       open={visible}
-      title="Add Question"
+      title={`Add Question ${currentIndex}`}
       okText="Add Question"
       onCancel={onCancel}
       onOk={() => {
@@ -81,7 +127,7 @@ function QuestionModal({
           });
       }}
     >
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical" onChange={handleQuestionValuesChange}>
         <Form.Item label="Question Type">
           <Select onChange={handleQuestionTypeChange} value={questionType}>
             <Option value="multiple">Multiple Answer question</Option>
@@ -105,10 +151,13 @@ function QuestionModal({
             >
               <Input />
             </Form.Item>
-            <Form.Item label="Ignore Case">
+            <Form.Item label="Ignore Case" name="ignoreCase">
               <Checkbox
                 checked={ignoreCase}
-                onChange={(e) => setIgnoreCase(e.target.checked)}
+                onChange={(e) => {
+                  setIgnoreCase(e.target.checked);
+                  handleQuestionValuesChange(e);
+                }}
               >
                 Ignore Case
               </Checkbox>

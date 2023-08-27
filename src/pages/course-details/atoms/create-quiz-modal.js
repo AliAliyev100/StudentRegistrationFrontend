@@ -15,7 +15,7 @@ import {
 
 const createQuizUrl = "http://localhost:8000/instructor/create-quiz";
 
-function QuizModal({ visible, onCreate, onCancel, setQuizInfo }) {
+function QuizModal({ visible, onCreate, onCancel, setCurrentQuizInfo }) {
   const { userToken, isLoggedIn } = useAuth();
   const { courseId } = useParams();
 
@@ -117,7 +117,7 @@ function QuizModal({ visible, onCreate, onCancel, setQuizInfo }) {
 
   useEffect(() => {
     if (data && data.quiz) {
-      setQuizInfo(data.quiz);
+      setCurrentQuizInfo(data.quiz);
     }
   }, [data]);
 

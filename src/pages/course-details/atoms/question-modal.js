@@ -7,7 +7,12 @@ import { useAuth } from "../../../contexts/userAuthContext";
 const { Option } = Select;
 const baseURL = `http://localhost:8000/instructor/add-quiz-question`;
 
-function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
+function QuestionModal({
+  visible,
+  currentQuizInfo,
+  setCurrentQuizInfo,
+  onCancel,
+}) {
   const { userToken } = useAuth();
 
   const [form] = Form.useForm();
@@ -15,7 +20,7 @@ function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
   const [ignoreCase, setIgnoreCase] = useState(false);
   const [multipleAnswerValues, setMultipleAnswerValues] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(
-    quizInfo.questions.length + 1 || 1
+    currentQuizInfo.questions.length + 1 || 1
   );
 
   const [options, setOptions] = useState({
@@ -28,16 +33,24 @@ function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
   });
 
   const [questionValues, setQuestionValues] = useState({
-    quizId: quizInfo._id,
+    quizId: currentQuizInfo._id,
   });
 
   const { data, error, isLoading, fetchData } = useFetch(baseURL, options);
 
   const onFinish = (values) => {
-    // onQuestionCreate(formData);
+    setCurrentQuizInfo((prevQuestionInfo) => {
+      const parsedData = JSON.parse(options.body);
+      const updatedQuestionInfo = {
+        ...prevQuestionInfo,
+        questions: [...prevQuestionInfo.questions, parsedData],
+      };
+      return updatedQuestionInfo;
+    });
+
     fetchData();
     form.resetFields();
-    setQuestionValues({ quizId: quizInfo._id });
+    setQuestionValues({ quizId: currentQuizInfo._id });
     setQuestionType("");
     setIgnoreCase(false);
     setMultipleAnswerValues([]);
@@ -109,6 +122,11 @@ function QuestionModal({ visible, quizInfo, onQuestionCreate, onCancel }) {
       setCurrentIndex(data.nextQuestionIndex);
     }
   }, [data]);
+
+  useEffect(() => {
+    setQuestionValues({ quizId: currentQuizInfo._id });
+    setCurrentIndex(currentQuizInfo.questions.length + 1 || 1);
+  }, [currentQuizInfo]);
 
   return (
     <Modal

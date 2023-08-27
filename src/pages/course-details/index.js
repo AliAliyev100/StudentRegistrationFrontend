@@ -65,7 +65,7 @@ export const CourseDetails = () => {
         setTab(<Announcements width={width} />);
         break;
       case "8":
-        setTab(<Quizzes />);
+        setTab(<Quizzes width={width} />);
         break;
     }
   };

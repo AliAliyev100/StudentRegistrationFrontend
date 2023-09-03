@@ -1,34 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import CreateQuizModal from "../atoms/create-quiz-modal";
+import EditQuizModal from "../atoms/edit-quiz-modal";
 import QuestionModal from "../atoms/question-modal";
+
 import QuizList from "../atoms/quiz-list";
 import { useFetch } from "../../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 
-function Quizzes({ width }) {
+function Quizzes({ width, setTab }) {
   const { courseId } = useParams();
+  const url = `http://localhost:8000/instructor/${courseId}/quizzes`;
 
   const [isQuizModalVisible, setIsQuizModalVisible] = useState(false);
   const [isQuestionModalVisible, setIsQuestionModalVisible] = useState(false);
-  const [currentQuizInfo, setCurrentQuizInfo] = useState();
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
+  const [currentQuizInfo, setCurrentQuizInfo] = useState();
   const [quizzesData, setQuizzesData] = useState([]);
-  const url = `http://localhost:8000/instructor/${courseId}/quizzes`;
 
   const { data, error, isLoading, fetchData } = useFetch(url, {});
 
   const showQuizModal = () => {
     setIsQuizModalVisible(true);
+    setIsQuestionModalVisible(false);
+    setIsEditModalVisible(false);
   };
 
-  const handleQuizCreateOrSelect = (values) => {
+  const openQuestionCreateModal = (values) => {
     setIsQuizModalVisible(false);
+    setIsEditModalVisible(false);
     setIsQuestionModalVisible(true);
+  };
+
+  const openEditQuizSelect = (values) => {
+    setIsQuizModalVisible(false);
+    setIsEditModalVisible(true);
+    setIsQuestionModalVisible(false);
   };
 
   const handleQuizCancel = () => {
     setIsQuizModalVisible(false);
+  };
+
+  const handleEditQuizCancel = () => {
+    setIsEditModalVisible(false);
   };
 
   const handleQuestionCancel = () => {
@@ -74,11 +90,22 @@ function Quizzes({ width }) {
         width={width}
         setCurrentQuizInfo={setCurrentQuizInfo}
         currentQuizInfo={currentQuizInfo}
-        onSelect={handleQuizCreateOrSelect}
+        handleCreateQuestionSelect={openQuestionCreateModal}
+        handleEditQuizSelect={openEditQuizSelect}
+        setTab={setTab}
       />
+      {currentQuizInfo && (
+        <EditQuizModal
+          visible={isEditModalVisible}
+          setEditModalVisibile={setIsEditModalVisible}
+          onCancel={handleEditQuizCancel}
+          quizData={currentQuizInfo}
+          setQuizData={setCurrentQuizInfo}
+        />
+      )}
       <CreateQuizModal
         visible={isQuizModalVisible}
-        onCreate={handleQuizCreateOrSelect}
+        onCreate={openQuestionCreateModal}
         onCancel={handleQuizCancel}
         setCurrentQuizInfo={setCurrentQuizInfo}
       />

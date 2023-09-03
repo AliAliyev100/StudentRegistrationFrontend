@@ -199,7 +199,15 @@ function QuizModal({ visible, onCreate, onCancel, setCurrentQuizInfo }) {
           rules={[
             {
               required: true,
-              message: "Please enter Number of Possible Attempts",
+              message: "Please enter a value",
+            },
+            {
+              validator(_, value) {
+                if (value === undefined || Number.isInteger(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error("Please enter an integer"));
+              },
             },
           ]}
         >

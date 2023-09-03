@@ -1,20 +1,28 @@
 import React, { useEffect } from "react";
 import { Card, Button } from "antd";
+import QuizQuesitons from "../components/quiz-questions";
 
 function QuizList({
   quizzes,
   width,
   setCurrentQuizInfo,
   currentQuizInfo,
-  onSelect,
+  handleCreateQuestionSelect,
+  handleEditQuizSelect,
+  setTab,
 }) {
-  const handleClickAddQuestion = (quizInfo) => {
+  const handleChooseQuestion = (quizInfo, mode) => {
     setCurrentQuizInfo(quizInfo);
+    if (mode === "addQuestion") {
+      handleCreateQuestionSelect();
+    } else if (mode == "editQuiz") {
+      handleEditQuizSelect();
+    }
   };
 
-  useEffect(() => {
-    onSelect();
-  }, [currentQuizInfo]);
+  const handleViewQuestions = (quizInfo) => {
+    setTab(<QuizQuesitons quizInfo={quizInfo} />);
+  };
 
   return (
     <div>
@@ -53,20 +61,28 @@ function QuizList({
                 <Button
                   type="default"
                   style={buttonStyle}
-                  onClick={() => handleClickAddQuestion(quiz)}
+                  onClick={() => handleChooseQuestion(quiz, "addQuestion")}
                 >
                   Add a Question
                 </Button>
                 <Button type="default" style={buttonStyle}>
                   Remove Quiz
                 </Button>
-                <Button type="default" style={buttonStyle}>
+                <Button
+                  type="default"
+                  style={buttonStyle}
+                  onClick={() => handleChooseQuestion(quiz, "editQuiz")}
+                >
                   Edit Quiz
                 </Button>
                 <Button type="default" style={buttonStyle}>
                   Finish Quiz
                 </Button>
-                <Button type="default" style={buttonStyle}>
+                <Button
+                  type="default"
+                  style={buttonStyle}
+                  onClick={() => handleViewQuestions(quiz, "View Question")}
+                >
                   View Questions
                 </Button>
               </div>

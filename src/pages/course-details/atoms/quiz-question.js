@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, List, Button, Tag } from "antd";
 import {
   CheckCircleOutlined,
@@ -6,93 +6,140 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import DeleteConfirmationModal from "./delete-confirmation-modal";
 
-function QuizQuestion({ question, index, onEdit, onRemove }) {
-  const { question: questionText, variants, type, answers } = question;
+function QuizQuestion({ question, index, quizId, setQuizQuestions }) {
+  const {
+    question: questionText,
+    variants,
+    type,
+    answers,
+    caseSensitive,
+  } = question;
 
-  const cardStyle = {
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-    fontFamily: "Arial, sans-serif",
-    fontWeight: "normal",
-    backgroundColor: "white",
+  const [isDeleteConfModalOpen, setIsDeleteConfModalOpen] = useState(false);
+
+  const onQuestionEdit = () => {};
+
+  const showDeleteModal = () => {
+    setIsDeleteConfModalOpen(true); // Show the delete confirmation modal
   };
 
-  const typeStyle = {
-    fontStyle: "italic",
-    textTransform: "capitalize",
+  const hideDeleteModal = () => {
+    setIsDeleteConfModalOpen(false); // Hide the delete confirmation modal
   };
 
-  const variantStyle = {
-    display: "flex",
-    alignItems: "center",
-  };
-
-  const checkStyle = {
-    marginRight: "8px",
-    fontSize: "18px",
-    color: "green",
-  };
-
-  const crossStyle = {
-    marginRight: "8px",
-    fontSize: "18px",
-    color: "red",
-  };
-
-  const textStyle = {
-    flex: 1,
+  const onQuestionRemove = () => {
+    hideDeleteModal(); // Hide the modal after deletion
   };
 
   return (
-    <Card title={`Question ${index + 1}`} style={cardStyle}>
-      <p style={typeStyle}>Type: {type}</p>
-      <p>{questionText}</p>
-      {variants && variants.length > 0 ? (
-        <List
-          dataSource={variants}
-          renderItem={(variant, vIndex) => (
-            <List.Item key={vIndex} style={variantStyle}>
-              {variant.isTrue ? (
-                <CheckCircleOutlined style={checkStyle} />
-              ) : (
-                <CloseCircleOutlined style={crossStyle} />
-              )}
-              <span style={textStyle}>{variant.text}</span>
-            </List.Item>
-          )}
-        />
-      ) : null}
+    <div>
+      <Card title={`Question ${index + 1}`} style={cardStyle}>
+        <p style={italicText}>
+          Type: <span style={boldText}>{type} </span>
+        </p>
+        <p style={italicText}>
+          Question: <span style={boldText}>{questionText} </span>
+        </p>
+        {caseSensitive !== undefined ? (
+          <p style={italicText}>
+            Case Sensitive:{" "}
+            <span style={boldText}>{caseSensitive.toString()} </span>
+          </p>
+        ) : null}
+        <hr />
+        {variants && variants.length > 0 ? (
+          <List
+            dataSource={variants}
+            renderItem={(variant, vIndex) => (
+              <List.Item key={vIndex} style={variantStyle}>
+                {variant.isTrue ? (
+                  <CheckCircleOutlined style={checkStyle} />
+                ) : (
+                  <CloseCircleOutlined style={crossStyle} />
+                )}
+                <span style={textStyle}>{variant.text}</span>
+              </List.Item>
+            )}
+          />
+        ) : null}
 
-      {answers && answers.length > 0 ? (
-        <div>
-          <p>Answers:</p>
-          {answers.map((answer, aIndex) => (
-            <Tag key={aIndex}>{answer}</Tag>
-          ))}
-        </div>
-      ) : null}
+        {answers && answers.length > 0 ? (
+          <div>
+            <p style={boldText}>Answers:</p>
+            {answers.map((answer, aIndex) => (
+              <Tag key={aIndex}>{answer}</Tag>
+            ))}
+          </div>
+        ) : null}
 
-      <Button
-        type="primary"
-        icon={<EditOutlined style={{ verticalAlign: "middle" }} />}
-        style={{ marginRight: "10px", marginTop: "20px", minWidth: "175px" }}
-        onClick={() => onEdit(index)}
-      >
-        Edit Question
-      </Button>
-      <Button
-        type="dashed"
-        icon={<DeleteOutlined style={{ verticalAlign: "middle" }} />}
-        style={{ marginRight: "10px", marginTop: "10px", minWidth: "175px" }}
-        onClick={() => onRemove(index)}
-      >
-        Remove Question
-      </Button>
-    </Card>
+        <Button
+          type="primary"
+          icon={<EditOutlined style={{ verticalAlign: "middle" }} />}
+          style={{ marginRight: "10px", marginTop: "20px", minWidth: "175px" }}
+          onClick={() => onQuestionEdit(index)}
+        >
+          Edit Question
+        </Button>
+        <Button
+          type="dashed"
+          icon={<DeleteOutlined style={{ verticalAlign: "middle" }} />}
+          style={{ marginRight: "10px", marginTop: "10px", minWidth: "175px" }}
+          danger
+          onClick={() => showDeleteModal(index)}
+        >
+          Remove Question
+        </Button>
+      </Card>
+      <DeleteConfirmationModal
+        visible={isDeleteConfModalOpen}
+        onCancel={hideDeleteModal}
+        questionId={question._id}
+        quizId={quizId}
+        setQuizQuestions={setQuizQuestions}
+      />
+    </div>
   );
 }
+const cardStyle = {
+  padding: "10px",
+  border: "1px solid #ccc",
+  borderRadius: "8px",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  fontFamily: "Arial, sans-serif",
+  fontWeight: "normal",
+  backgroundColor: "white",
+};
+
+const italicText = {
+  fontStyle: "italic",
+  textTransform: "capitalize",
+};
+
+const variantStyle = {
+  display: "flex",
+  alignItems: "center",
+};
+
+const checkStyle = {
+  marginRight: "8px",
+  fontSize: "18px",
+  color: "green",
+};
+
+const crossStyle = {
+  marginRight: "8px",
+  fontSize: "18px",
+  color: "red",
+};
+
+const textStyle = {
+  flex: 1,
+};
+
+const boldText = {
+  fontWeight: "bold",
+};
 
 export default QuizQuestion;

@@ -7,6 +7,7 @@ import QuestionModal from "../atoms/question-modal";
 import QuizList from "../atoms/quiz-list";
 import { useFetch } from "../../../hooks/useFetch";
 import { useParams } from "react-router-dom";
+import QuizQuestions from "./quiz-questions";
 
 function Quizzes({ width, setTab }) {
   const { courseId } = useParams();
@@ -18,6 +19,8 @@ function Quizzes({ width, setTab }) {
 
   const [currentQuizInfo, setCurrentQuizInfo] = useState();
   const [quizzesData, setQuizzesData] = useState([]);
+
+  const [renderQuizQuestions, setRenderQuizQuestions] = useState(false);
 
   const { data, error, isLoading, fetchData } = useFetch(url, {});
 
@@ -76,7 +79,7 @@ function Quizzes({ width, setTab }) {
     }
   }, [currentQuizInfo]);
 
-  return (
+  return !renderQuizQuestions ? (
     <div>
       <Button
         type="primary"
@@ -89,10 +92,9 @@ function Quizzes({ width, setTab }) {
         quizzes={quizzesData}
         width={width}
         setCurrentQuizInfo={setCurrentQuizInfo}
-        currentQuizInfo={currentQuizInfo}
         handleCreateQuestionSelect={openQuestionCreateModal}
         handleEditQuizSelect={openEditQuizSelect}
-        setTab={setTab}
+        setRenderQuizQuestions={setRenderQuizQuestions}
       />
       {currentQuizInfo && (
         <EditQuizModal
@@ -118,6 +120,11 @@ function Quizzes({ width, setTab }) {
         />
       )}
     </div>
+  ) : (
+    <QuizQuestions
+      quizInfo={currentQuizInfo}
+      setRenderQuizQuestions={setRenderQuizQuestions}
+    />
   );
 }
 

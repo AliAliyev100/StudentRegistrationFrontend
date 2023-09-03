@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { Card, Button } from "antd";
-import QuizQuesitons from "../components/quiz-questions";
 
 function QuizList({
   quizzes,
   width,
   setCurrentQuizInfo,
-  currentQuizInfo,
   handleCreateQuestionSelect,
   handleEditQuizSelect,
-  setTab,
+  setRenderQuizQuestions,
 }) {
   const handleChooseQuestion = (quizInfo, mode) => {
     setCurrentQuizInfo(quizInfo);
@@ -21,7 +19,8 @@ function QuizList({
   };
 
   const handleViewQuestions = (quizInfo) => {
-    setTab(<QuizQuesitons quizInfo={quizInfo} />);
+    setCurrentQuizInfo(quizInfo);
+    setRenderQuizQuestions(true);
   };
 
   return (

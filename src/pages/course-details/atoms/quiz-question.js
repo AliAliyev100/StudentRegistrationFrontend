@@ -7,6 +7,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import DeleteConfirmationModal from "./delete-confirmation-modal";
+import EditQuizQuestionModal from "./edit-quiz-question";
 
 function QuizQuestion({ question, index, quizId, setQuizQuestions }) {
   const {
@@ -19,18 +20,14 @@ function QuizQuestion({ question, index, quizId, setQuizQuestions }) {
 
   const [isDeleteConfModalOpen, setIsDeleteConfModalOpen] = useState(false);
 
-  const onQuestionEdit = () => {};
+  const showEditModal = () => {};
 
   const showDeleteModal = () => {
-    setIsDeleteConfModalOpen(true); // Show the delete confirmation modal
+    setIsDeleteConfModalOpen(true);
   };
 
   const hideDeleteModal = () => {
-    setIsDeleteConfModalOpen(false); // Hide the delete confirmation modal
-  };
-
-  const onQuestionRemove = () => {
-    hideDeleteModal(); // Hide the modal after deletion
+    setIsDeleteConfModalOpen(false);
   };
 
   return (
@@ -78,7 +75,7 @@ function QuizQuestion({ question, index, quizId, setQuizQuestions }) {
           type="primary"
           icon={<EditOutlined style={{ verticalAlign: "middle" }} />}
           style={{ marginRight: "10px", marginTop: "20px", minWidth: "175px" }}
-          onClick={() => onQuestionEdit(index)}
+          onClick={() => showEditModal(index)}
         >
           Edit Question
         </Button>
@@ -99,6 +96,9 @@ function QuizQuestion({ question, index, quizId, setQuizQuestions }) {
         quizId={quizId}
         setQuizQuestions={setQuizQuestions}
       />
+      {index === 2 && (
+        <EditQuizQuestionModal question={question} visible={true} />
+      )}
     </div>
   );
 }

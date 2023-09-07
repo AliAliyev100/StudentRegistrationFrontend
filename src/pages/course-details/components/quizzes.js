@@ -123,6 +123,7 @@ function Quizzes({ width, setTab }) {
   ) : (
     <QuizQuestions
       quizInfo={currentQuizInfo}
+      setQuizInfo={setCurrentQuizInfo}
       setRenderQuizQuestions={setRenderQuizQuestions}
     />
   );

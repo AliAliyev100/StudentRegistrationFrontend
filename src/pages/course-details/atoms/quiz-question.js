@@ -9,7 +9,14 @@ import {
 import DeleteConfirmationModal from "./delete-confirmation-modal";
 import EditQuizQuestionModal from "./edit-quiz-question";
 
-function QuizQuestion({ question, index, quizId, setQuizQuestions }) {
+function QuizQuestion({
+  question,
+  index,
+  quizId,
+  setQuizQuestions,
+  currentQuizInfo,
+  setCurrentQuizInfo,
+}) {
   const {
     question: questionText,
     variants,
@@ -97,7 +104,12 @@ function QuizQuestion({ question, index, quizId, setQuizQuestions }) {
         setQuizQuestions={setQuizQuestions}
       />
       {index === 2 && (
-        <EditQuizQuestionModal question={question} visible={true} />
+        <EditQuizQuestionModal
+          question={question}
+          visible={true}
+          currentQuizInfo={currentQuizInfo}
+          setCurrentQuizInfo={setCurrentQuizInfo}
+        />
       )}
     </div>
   );

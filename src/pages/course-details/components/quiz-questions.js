@@ -5,7 +5,7 @@ import QuizQuestion from "../atoms/quiz-question";
 import { LeftOutlined } from "@ant-design/icons"; // Import the left arrow icon
 import Quizzes from "./quizzes";
 
-function QuizQuestions({ quizInfo, setRenderQuizQuestions }) {
+function QuizQuestions({ quizInfo, setRenderQuizQuestions, setQuizInfo }) {
   const url = `http://localhost:8000/instructor/${quizInfo._id}/quiz-questions`;
   const { data, error, isLoading, fetchData } = useFetch(url, {});
 
@@ -34,6 +34,8 @@ function QuizQuestions({ quizInfo, setRenderQuizQuestions }) {
             index={index}
             quizId={quizInfo._id}
             setQuizQuestions={setQuizQuestions}
+            currentQuizInfo={quizInfo}
+            setCurrentQuizInfo={setQuizInfo}
           />
           <br />
         </div>

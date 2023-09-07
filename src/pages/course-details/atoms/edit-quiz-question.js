@@ -1,55 +1,69 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Checkbox, Radio } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, Select, Button, Checkbox, Radio } from "antd";
 
-const EditQuizQuestionModal = ({ visible, question }) => {
+import { useFetch } from "../../../hooks/useFetch";
+import { useAuth } from "../../../contexts/userAuthContext";
+
+const { Option } = Select;
+const baseURL = `http://localhost:8000/instructor/edit-quiz-question`;
+
+function QuestionModal({
+  visible,
+  question,
+  currentQuizInfo,
+  setCurrentQuizInfo,
+  onCancel,
+}) {
+  const { userToken } = useAuth();
+  console.log(question);
+
   const [form] = Form.useForm();
+  const [questionType, setQuestionType] = useState(question.questionType);
+  const [ignoreCase, setIgnoreCase] = useState(false);
+  const [multipleAnswerValues, setMultipleAnswerValues] = useState(
+    question.variants
+  );
+  const [currentIndex, setCurrentIndex] = useState(
+    currentQuizInfo.questions.length + 1 || 1
+  );
 
   const [questionValues, setQuestionValues] = useState(question);
 
-  const [editedVariants, setEditedVariants] = useState([]);
+  const [options, setOptions] = useState({
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + userToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...(questionType === "open" ? {} : { variants: multipleAnswerValues }), // Only include variants if not "open"
+      ...questionValues,
+    }),
+  });
 
-  useEffect(() => {
-    if (visible) {
-      let initialValue = {
-        question: question.question,
+  const { data, error, isLoading, fetchData } = useFetch(baseURL, options);
+
+  const onFinish = (values) => {
+    setCurrentQuizInfo((prevQuestionInfo) => {
+      const parsedData = JSON.parse(options.body);
+      const updatedQuestionInfo = {
+        ...prevQuestionInfo,
+        questions: [...prevQuestionInfo.questions, parsedData],
       };
+      return updatedQuestionInfo;
+    });
 
-      if (question.type === "open") {
-        const answersString = question.answers.join(", ");
-        initialValue = {
-          ...initialValue,
-          answers: answersString,
-          caseSensitive: question.caseSensitive,
-        };
-      } else if (question.type === "multiple" || question.type === "single") {
-        initialValue = {
-          ...initialValue,
-          variants: question.variants,
-        };
-      }
-
-      if (question.type === "multiple") {
-        const initialVariants = [];
-        question.variants.forEach((variant) => {
-          if (variant.isTrue) {
-            initialVariants.push(variant.text);
-          }
-        });
-        initialValue.variants = initialVariants;
-      } else if (question.type === "single") {
-        const initialVariant = question.variants.find(
-          (variant) => variant.isTrue
-        );
-        initialValue.variants = initialVariant
-          ? initialVariant.text
-          : undefined;
-      }
-
-      form.setFieldsValue(initialValue);
-
-      setEditedVariants(question.variants);
-    }
-  }, [visible, form, question]);
+    fetchData();
+    form.resetFields();
+    setQuestionValues({ quizId: currentQuizInfo._id });
+    setQuestionType("");
+    setIgnoreCase(false);
+    setMultipleAnswerValues([]);
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      body: {},
+    }));
+  };
 
   const handleQuestionValuesChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -65,83 +79,220 @@ const EditQuizQuestionModal = ({ visible, question }) => {
     }
   };
 
-  const handleVariantTextChange = (index, newText) => {
-    const updatedVariants = [...editedVariants];
-    updatedVariants[index].text = newText;
-    setEditedVariants(updatedVariants);
+  const handleQuestionTypeChange = (value) => {
+    setQuestionType(value);
+    setIgnoreCase(false);
+    setMultipleAnswerValues([{ text: "", isTrue: false }]);
+    setQuestionValues({ ...questionValues, questionType: value });
+  };
+
+  const handleAddAnswer = () => {
+    setMultipleAnswerValues([
+      ...multipleAnswerValues,
+      { text: "", isTrue: false },
+    ]);
+  };
+
+  const handleAnswerChange = (index, value) => {
+    const updatedValues = [...multipleAnswerValues];
+    updatedValues[index].text = value;
+    setMultipleAnswerValues(updatedValues);
+  };
+
+  const handleIsTrueChange = (index, checked) => {
+    const updatedValues = [...multipleAnswerValues];
+    updatedValues[index].isTrue = checked;
+    setMultipleAnswerValues(updatedValues);
+  };
+  const handleSingleAnswerTrue = (index) => {
+    const updatedAnswers = multipleAnswerValues.map((answer, i) => ({
+      ...answer,
+      isTrue: i === index,
+    }));
+    setMultipleAnswerValues(updatedAnswers);
   };
 
   useEffect(() => {
-    console.log(editedVariants);
-  }, [editedVariants]);
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      body: JSON.stringify({
+        ...questionValues,
+        ...(questionType === "open" ? {} : { variants: multipleAnswerValues }), // Only include variants if not "open"
+      }),
+    }));
+  }, [questionType, questionValues, multipleAnswerValues]);
+
+  useEffect(() => {
+    if (data && data.nextQuestionIndex) {
+      setCurrentIndex(data.nextQuestionIndex);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setQuestionValues(question);
+    setCurrentIndex(currentQuizInfo.questions.length + 1 || 1);
+  }, [currentQuizInfo]);
+
+  // useEffect(() => {
+  //   console.log(options);
+  // }, [options]);
+
+  // useEffect(() => {
+  //   console.log(multipleAnswerValues);
+  // }, [multipleAnswerValues]);
 
   return (
-    <Modal title="Edit Quiz Question" open={visible} destroyOnClose>
-      <Form form={form} onChange={handleQuestionValuesChange}>
-        <Form.Item
-          name="question"
-          label="Question"
-          rules={[{ required: true, message: "Please enter a question" }]}
-        >
-          <Input />
+    <Modal
+      open={visible}
+      title={`Add Question ${currentIndex}`}
+      okText="Add Question"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            onFinish(values);
+          })
+          .catch((info) => {
+            console.log("Validate Failed:", info);
+          });
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        onChange={handleQuestionValuesChange}
+        initialValues={{
+          question: question.question,
+          ...question.variants.reduce((acc, variant, index) => {
+            acc[`answers[${index}].text`] = variant.text;
+            return acc;
+          }, {}),
+        }}
+      >
+        <Form.Item label="Question Type">
+          <Select onChange={handleQuestionTypeChange} value={questionType}>
+            <Option value="multiple">Multiple Answer question</Option>
+            <Option value="single">Single Answer question</Option>
+            <Option value="open">Open ended question</Option>
+          </Select>
         </Form.Item>
-        {question.type === "open" && (
-          <Form.Item
-            name="answers"
-            label="Answers (Comma-separated)"
-            rules={[{ required: true, message: "Please enter answers" }]}
-          >
-            <Input />
-          </Form.Item>
+        {questionType === "open" && (
+          <>
+            <Form.Item
+              name="question"
+              label="Question"
+              rules={[{ required: true, message: "Please enter the question" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="answers"
+              label="Answers (separated by commas)"
+              rules={[{ required: true, message: "Please enter the answers" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item label="Ignore Case" name="ignoreCase">
+              <Checkbox
+                checked={ignoreCase}
+                onChange={(e) => {
+                  setIgnoreCase(e.target.checked);
+                  handleQuestionValuesChange(e);
+                }}
+              >
+                Ignore Case
+              </Checkbox>
+            </Form.Item>
+          </>
         )}
-        {question.type === "multiple" && (
-          <Form.Item name="variants" label="Variants">
-            <Checkbox.Group>
-              {editedVariants.map((variant, index) => (
-                <div key={index} style={{ marginBottom: "10px" }}>
+        {questionType === "multiple" && (
+          <>
+            <Form.Item
+              name="question"
+              label="Question"
+              rules={[{ required: true, message: "Please enter the question" }]}
+            >
+              <Input />
+            </Form.Item>
+            {multipleAnswerValues.map((answer, index) => (
+              <div key={index}>
+                <Form.Item
+                  label={`Answer ${index + 1}`}
+                  name={`answers[${index}].text`}
+                  rules={[
+                    { required: true, message: "Please enter the answer" },
+                    {
+                      min: 1,
+                      message: "Answer must have at least one character",
+                    },
+                  ]}
+                >
                   <Input
-                    value={variant.text}
-                    onChange={(e) =>
-                      handleVariantTextChange(index, e.target.value)
-                    }
+                    value={answer.text}
+                    onChange={(e) => handleAnswerChange(index, e.target.value)}
                   />
-                  <Checkbox value={variant.text} id={variant._id}>
-                    {variant.text}
+                </Form.Item>
+                <Form.Item>
+                  <Checkbox
+                    checked={answer.isTrue}
+                    onChange={(e) =>
+                      handleIsTrueChange(index, e.target.checked)
+                    }
+                  >
+                    Is True
                   </Checkbox>
-                </div>
-              ))}
-            </Checkbox.Group>
-          </Form.Item>
+                </Form.Item>
+              </div>
+            ))}
+
+            <Button onClick={handleAddAnswer}>Add Another Answer</Button>
+            <h1></h1>
+          </>
         )}
-        {question.type === "single" && (
-          <Form.Item name="variants" label="Variants">
-            <Radio.Group>
-              {editedVariants.map((variant, index) => (
-                <div key={index} style={{ marginBottom: "10px" }}>
+        {questionType === "single" && (
+          <>
+            <Form.Item
+              name="question"
+              label="Question"
+              rules={[{ required: true, message: "Please enter the question" }]}
+            >
+              <Input />
+            </Form.Item>
+            {multipleAnswerValues.map((answer, index) => (
+              <div key={index}>
+                <Form.Item
+                  label={`Answer ${index + 1}`}
+                  name={`answers[${index}].text`}
+                  rules={[
+                    { required: true, message: "Please enter the answer" },
+                    {
+                      min: 1,
+                      message: "Answer must have at least one character",
+                    },
+                  ]}
+                >
                   <Input
-                    value={variant.text}
-                    onChange={(e) =>
-                      handleVariantTextChange(index, e.target.value)
-                    }
+                    value={answer.text}
+                    onChange={(e) => handleAnswerChange(index, e.target.value)}
                   />
-                  <Radio value={variant.text}>Correct Question</Radio>
-                </div>
-              ))}
-            </Radio.Group>
-          </Form.Item>
-        )}
-        {question.type === "open" && (
-          <Form.Item
-            name="caseSensitive"
-            valuePropName="checked"
-            label="Case Sensitive"
-          >
-            <Checkbox />
-          </Form.Item>
+                </Form.Item>
+                <Form.Item>
+                  <Radio
+                    checked={answer.isTrue}
+                    onChange={() => handleSingleAnswerTrue(index)}
+                  >
+                    Correct Answer
+                  </Radio>
+                </Form.Item>
+              </div>
+            ))}
+            <Button onClick={handleAddAnswer}>Add Another Answer</Button>
+          </>
         )}
       </Form>
     </Modal>
   );
-};
+}
 
-export default EditQuizQuestionModal;
+export default QuestionModal;

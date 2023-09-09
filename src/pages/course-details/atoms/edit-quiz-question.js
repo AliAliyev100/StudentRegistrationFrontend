@@ -7,12 +7,13 @@ import { useAuth } from "../../../contexts/userAuthContext";
 const { Option } = Select;
 const baseURL = `http://localhost:8000/instructor/edit-quiz-question`;
 
-function QuestionModal({
+function EditQuestionModal({
   visible,
   question,
   currentQuizInfo,
   setCurrentQuizInfo,
   onCancel,
+  questionIndex,
 }) {
   const { userToken } = useAuth();
   console.log(question);
@@ -21,12 +22,8 @@ function QuestionModal({
   const [questionType, setQuestionType] = useState(question.questionType);
   const [ignoreCase, setIgnoreCase] = useState(false);
   const [multipleAnswerValues, setMultipleAnswerValues] = useState(
-    question.variants
+    question.variants || []
   );
-  const [currentIndex, setCurrentIndex] = useState(
-    currentQuizInfo.questions.length + 1 || 1
-  );
-
   const [questionValues, setQuestionValues] = useState(question);
 
   const [options, setOptions] = useState({
@@ -124,28 +121,18 @@ function QuestionModal({
 
   useEffect(() => {
     if (data && data.nextQuestionIndex) {
-      setCurrentIndex(data.nextQuestionIndex);
     }
   }, [data]);
 
   useEffect(() => {
     setQuestionValues(question);
-    setCurrentIndex(currentQuizInfo.questions.length + 1 || 1);
   }, [currentQuizInfo]);
-
-  // useEffect(() => {
-  //   console.log(options);
-  // }, [options]);
-
-  // useEffect(() => {
-  //   console.log(multipleAnswerValues);
-  // }, [multipleAnswerValues]);
 
   return (
     <Modal
       open={visible}
-      title={`Add Question ${currentIndex}`}
-      okText="Add Question"
+      title={`Edit Question ${questionIndex}`}
+      okText="Edit Question"
       onCancel={onCancel}
       onOk={() => {
         form
@@ -164,10 +151,11 @@ function QuestionModal({
         onChange={handleQuestionValuesChange}
         initialValues={{
           question: question.question,
-          ...question.variants.reduce((acc, variant, index) => {
+          ...multipleAnswerValues.reduce((acc, variant, index) => {
             acc[`answers[${index}].text`] = variant.text;
             return acc;
           }, {}),
+          answers: question.answers,
         }}
       >
         <Form.Item label="Question Type">
@@ -295,4 +283,4 @@ function QuestionModal({
   );
 }
 
-export default QuestionModal;
+export default EditQuestionModal;

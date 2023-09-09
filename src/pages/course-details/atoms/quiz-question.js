@@ -20,14 +20,22 @@ function QuizQuestion({
   const {
     question: questionText,
     variants,
-    type,
+    questionType,
     answers,
     caseSensitive,
   } = question;
 
   const [isDeleteConfModalOpen, setIsDeleteConfModalOpen] = useState(false);
 
-  const showEditModal = () => {};
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // New state variable
+
+  const showEditModal = () => {
+    setIsEditModalOpen(true); // Open the EditQuizQuestionModal when "Edit" button is clicked
+  };
+
+  const hideEditModal = () => {
+    setIsEditModalOpen(false); // Close the EditQuizQuestionModal
+  };
 
   const showDeleteModal = () => {
     setIsDeleteConfModalOpen(true);
@@ -41,7 +49,7 @@ function QuizQuestion({
     <div>
       <Card title={`Question ${index + 1}`} style={cardStyle}>
         <p style={italicText}>
-          Type: <span style={boldText}>{type} </span>
+          Type: <span style={boldText}>{questionType} </span>
         </p>
         <p style={italicText}>
           Question: <span style={boldText}>{questionText} </span>
@@ -103,12 +111,14 @@ function QuizQuestion({
         quizId={quizId}
         setQuizQuestions={setQuizQuestions}
       />
-      {index === 2 && (
+      {isEditModalOpen === true && (
         <EditQuizQuestionModal
           question={question}
-          visible={true}
+          visible={isEditModalOpen}
           currentQuizInfo={currentQuizInfo}
           setCurrentQuizInfo={setCurrentQuizInfo}
+          onCancel={hideEditModal}
+          questionIndex={index + 1}
         />
       )}
     </div>

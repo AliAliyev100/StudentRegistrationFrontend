@@ -4,6 +4,8 @@ import { Modal, Form, Input, Select, Button, Checkbox, Radio } from "antd";
 import { useFetch } from "../../../hooks/useFetch";
 import { useAuth } from "../../../contexts/userAuthContext";
 
+import Loading from "../../../components/loading";
+
 const { Option } = Select;
 const baseURL = `http://localhost:8000/instructor/edit-quiz-question`;
 
@@ -11,12 +13,11 @@ function EditQuestionModal({
   visible,
   question,
   currentQuizInfo,
-  setCurrentQuizInfo,
   onCancel,
   questionIndex,
+  setQuizQuestions,
 }) {
   const { userToken } = useAuth();
-  console.log(question);
 
   const [form] = Form.useForm();
   const [questionType, setQuestionType] = useState(question.questionType);
@@ -41,25 +42,8 @@ function EditQuestionModal({
   const { data, error, isLoading, fetchData } = useFetch(baseURL, options);
 
   const onFinish = (values) => {
-    setCurrentQuizInfo((prevQuestionInfo) => {
-      const parsedData = JSON.parse(options.body);
-      const updatedQuestionInfo = {
-        ...prevQuestionInfo,
-        questions: [...prevQuestionInfo.questions, parsedData],
-      };
-      return updatedQuestionInfo;
-    });
-
     fetchData();
-    form.resetFields();
-    setQuestionValues({ quizId: currentQuizInfo._id });
-    setQuestionType("");
-    setIgnoreCase(false);
-    setMultipleAnswerValues([]);
-    setOptions((prevOptions) => ({
-      ...prevOptions,
-      body: {},
-    }));
+    onCancel();
   };
 
   const handleQuestionValuesChange = (e) => {
@@ -114,19 +98,35 @@ function EditQuestionModal({
       ...prevOptions,
       body: JSON.stringify({
         ...questionValues,
+        quizId: currentQuizInfo._id,
         ...(questionType === "open" ? {} : { variants: multipleAnswerValues }), // Only include variants if not "open"
       }),
     }));
   }, [questionType, questionValues, multipleAnswerValues]);
 
   useEffect(() => {
-    if (data && data.nextQuestionIndex) {
+    if (data && data.updatedQuizQuestion) {
+      const updatedQuestion = data.updatedQuizQuestion;
+      setQuizQuestions((prevQuestions) => {
+        const updatedQuestions = prevQuestions.map((question) => {
+          if (question._id === updatedQuestion._id) {
+            return updatedQuestion;
+          } else {
+            return question;
+          }
+        });
+        return updatedQuestions;
+      });
     }
   }, [data]);
 
   useEffect(() => {
     setQuestionValues(question);
   }, [currentQuizInfo]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Modal

@@ -5,12 +5,16 @@ import EditQuizModal from "../atoms/edit-quiz-modal";
 import QuestionModal from "../atoms/question-modal";
 
 import QuizList from "../atoms/quiz-list";
-import { useFetch } from "../../../hooks/useFetch";
-import { useParams } from "react-router-dom";
 import QuizQuestions from "./quiz-questions";
 
-function Quizzes({ width, setTab }) {
+import { useFetch } from "../../../hooks/useFetch";
+import { useWindowWidth } from "../../../hooks/useWindowWidth";
+import { useParams } from "react-router-dom";
+
+function Quizzes() {
   const { courseId } = useParams();
+  const width = useWindowWidth();
+
   const url = `http://localhost:8000/instructor/${courseId}/quizzes`;
 
   const [isQuizModalVisible, setIsQuizModalVisible] = useState(false);

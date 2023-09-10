@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 
 import { useAuth } from "../../contexts/userAuthContext";
 import { useFetch } from "../../hooks/useFetch";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
+
 import ErrorComponent from "../../components/ErrorComponent";
 import Loading from "../../components/loading";
 
@@ -30,17 +32,7 @@ export const CourseDetails = () => {
   // } = useAuth();
 
   const { courseId } = useParams();
-  const [width, setWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const width = useWindowWidth();
 
   const url = "http://localhost:8000/courses/" + courseId;
 
@@ -62,10 +54,10 @@ export const CourseDetails = () => {
         setTab(<CourseInformation />);
         break;
       case "3":
-        setTab(<Announcements width={width} />);
+        setTab(<Announcements />);
         break;
       case "8":
-        setTab(<Quizzes width={width} setTab={setTab} />);
+        setTab(<Quizzes setTab={setTab} />);
         break;
     }
   };

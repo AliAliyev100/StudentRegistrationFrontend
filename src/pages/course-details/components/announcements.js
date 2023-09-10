@@ -3,11 +3,15 @@ import { Card, List, Modal, Button, Form, Input } from "antd";
 import { NewAnnouncementForm } from "../atoms/new-announcement-form";
 import { useAuth } from "../../../contexts/userAuthContext";
 import { useFetch } from "../../../hooks/useFetch";
+import { useWindowWidth } from "../../../hooks/useWindowWidth";
+
 import { useParams } from "react-router-dom";
 const { Meta } = Card;
 
-const AnnouncementsComponent = ({ width }) => {
+const AnnouncementsComponent = () => {
   const { courseId } = useParams();
+  const width = useWindowWidth();
+
   const createUrl = `http://localhost:8000/instructor/${courseId}/create-announcement`;
   const getUrl = `http://localhost:8000/courses/${courseId}/announcements`;
 

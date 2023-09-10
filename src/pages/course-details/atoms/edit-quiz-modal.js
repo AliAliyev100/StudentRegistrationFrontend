@@ -22,7 +22,7 @@ function EditQuizModal({
   setEditModalVisibile,
   onCancel,
   quizData,
-  setQuizData,
+  setCurrentQuiz,
 }) {
   const { userToken, isLoggedIn } = useAuth();
 
@@ -96,7 +96,7 @@ function EditQuizModal({
     if (data) {
       setEditModalVisibile(false);
       if (data.quiz) {
-        setQuizData(data.quiz);
+        setCurrentQuiz(data.quiz);
       }
     }
   }, [data]);

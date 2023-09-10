@@ -39,15 +39,6 @@ function QuestionModal({
   const { data, error, isLoading, fetchData } = useFetch(baseURL, options);
 
   const onFinish = (values) => {
-    setCurrentQuizInfo((prevQuestionInfo) => {
-      const parsedData = JSON.parse(options.body);
-      const updatedQuestionInfo = {
-        ...prevQuestionInfo,
-        questions: [...prevQuestionInfo.questions, parsedData],
-      };
-      return updatedQuestionInfo;
-    });
-
     fetchData();
     form.resetFields();
     setQuestionValues({ quizId: currentQuizInfo._id });
@@ -120,6 +111,14 @@ function QuestionModal({
   useEffect(() => {
     if (data && data.nextQuestionIndex) {
       setCurrentIndex(data.nextQuestionIndex);
+      setCurrentQuizInfo((prevQuestionInfo) => {
+        const updatedQuiz = { ...prevQuestionInfo };
+        updatedQuiz.questions = [
+          ...updatedQuiz.questions,
+          data.addedQuestionId,
+        ];
+        return updatedQuiz;
+      });
     }
   }, [data]);
 

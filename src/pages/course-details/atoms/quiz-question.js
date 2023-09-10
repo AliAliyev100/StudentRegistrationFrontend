@@ -110,15 +110,17 @@ function QuizQuestion({
         questionId={question._id}
         quizId={quizId}
         setQuizQuestions={setQuizQuestions}
+        setCurrentQuizInfo={setCurrentQuizInfo}
       />
-      {isEditModalOpen === true && (
+
+      {isEditModalOpen && (
         <EditQuizQuestionModal
-          question={question}
           visible={isEditModalOpen}
+          question={question}
           currentQuizInfo={currentQuizInfo}
-          setCurrentQuizInfo={setCurrentQuizInfo}
           onCancel={hideEditModal}
           questionIndex={index + 1}
+          setQuizQuestions={setQuizQuestions}
         />
       )}
     </div>

@@ -102,7 +102,7 @@ function Quizzes({ width, setTab }) {
           setEditModalVisibile={setIsEditModalVisible}
           onCancel={handleEditQuizCancel}
           quizData={currentQuizInfo}
-          setQuizData={setCurrentQuizInfo}
+          setCurrentQuiz={setCurrentQuizInfo}
         />
       )}
       <CreateQuizModal
@@ -122,8 +122,8 @@ function Quizzes({ width, setTab }) {
     </div>
   ) : (
     <QuizQuestions
-      quizInfo={currentQuizInfo}
-      setQuizInfo={setCurrentQuizInfo}
+      currentQuizInfo={currentQuizInfo}
+      setCurrentQuizInfo={setCurrentQuizInfo}
       setRenderQuizQuestions={setRenderQuizQuestions}
     />
   );

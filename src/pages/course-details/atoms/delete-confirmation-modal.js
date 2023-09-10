@@ -9,6 +9,7 @@ function DeleteConfirmationModal({
   questionId,
   quizId,
   setQuizQuestions,
+  setCurrentQuizInfo,
 }) {
   const { userToken, isLoggedIn } = useAuth();
 
@@ -31,6 +32,12 @@ function DeleteConfirmationModal({
   const handleRemove = () => {
     fetchData();
     onCancel();
+    setCurrentQuizInfo((prevQuizInfo) => ({
+      ...prevQuizInfo, // Spread the previous quizInfo
+      questions: prevQuizInfo.questions.filter(
+        (question) => question !== questionId
+      ),
+    }));
     setQuizQuestions((prevQuizQuestions) =>
       prevQuizQuestions.filter((question) => question._id !== questionId)
     );

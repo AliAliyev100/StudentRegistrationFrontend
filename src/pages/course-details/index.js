@@ -8,12 +8,12 @@ import { useWindowWidth } from "../../hooks/useWindowWidth";
 import ErrorComponent from "../../components/ErrorComponent";
 import Loading from "../../components/loading";
 
-import MenuComponent from "./components/menu";
-import MobileTab from "./components/mobileTab";
-import Home from "./components/home";
-import Announcements from "./components/announcements";
-import CourseInformation from "./components/course-information";
-import Quizzes from "./components/quizzes";
+import MenuComponent from "./shared/components/menu";
+import MobileTab from "./shared/components/mobileTab";
+import Home from "./shared/components/home";
+import Announcements from "./shared/components/announcements";
+import CourseInformation from "./shared/components/course-information";
+import Quizzes from "./Instructor/components/quizzes";
 
 import { Layout } from "antd";
 

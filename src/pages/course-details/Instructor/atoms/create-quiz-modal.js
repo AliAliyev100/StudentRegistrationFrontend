@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../../contexts/userAuthContext";
-import { useFetch } from "../../../hooks/useFetch";
+import { useAuth } from "../../../../contexts/userAuthContext";
+import { useFetch } from "../../../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 
 import {

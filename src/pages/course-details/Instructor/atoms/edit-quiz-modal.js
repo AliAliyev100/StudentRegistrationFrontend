@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useFetch } from "../../../hooks/useFetch";
-import { useAuth } from "../../../contexts/userAuthContext";
+import { useFetch } from "../../../../hooks/useFetch";
+import { useAuth } from "../../../../contexts/userAuthContext";
 
 import dayjs, { format } from "dayjs";
 

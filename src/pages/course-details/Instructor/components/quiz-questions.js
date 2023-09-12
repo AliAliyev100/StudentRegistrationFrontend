@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button } from "antd";
-import { useFetch } from "../../../hooks/useFetch";
+import { useFetch } from "../../../../hooks/useFetch";
 import QuizQuestion from "../atoms/quiz-question";
 import { LeftOutlined } from "@ant-design/icons"; // Import the left arrow icon
-import Quizzes from "./quizzes";
 
 function QuizQuestions({
   currentQuizInfo,

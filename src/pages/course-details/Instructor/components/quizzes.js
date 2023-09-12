@@ -7,8 +7,8 @@ import QuestionModal from "../atoms/question-modal";
 import QuizList from "../atoms/quiz-list";
 import QuizQuestions from "./quiz-questions";
 
-import { useFetch } from "../../../hooks/useFetch";
-import { useWindowWidth } from "../../../hooks/useWindowWidth";
+import { useFetch } from "../../../../hooks/useFetch";
+import { useWindowWidth } from "../../../../hooks/useWindowWidth";
 import { useParams } from "react-router-dom";
 
 function Quizzes() {

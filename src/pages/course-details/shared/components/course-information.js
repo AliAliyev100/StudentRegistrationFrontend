@@ -4,17 +4,17 @@ import "react-quill/dist/quill.snow.css";
 import { Button } from "antd";
 
 import { useParams } from "react-router-dom";
-import { useFetch } from "../../../hooks/useFetch";
-import { useAuth } from "../../../contexts/userAuthContext";
+import { useAuth } from "../../../../contexts/userAuthContext";
+import { useFetch } from "../../../../hooks/useFetch";
 
-import TextEditor from "../atoms/text-editor";
+import TextEditor from "../../Instructor/atoms/text-editor";
 
 const CourseInformation = () => {
   const { courseId } = useParams();
   const createUrl = `http://localhost:8000/instructor/${courseId}/edit-content`;
   const getUrl = `http://localhost:8000/courses/${courseId}/get-content`;
 
-  const { userToken, isLoggedIn } = useAuth();
+  const { userToken, isLoggedIn, userRole } = useAuth();
 
   const [editorHtml, setEditorHtml] = useState("");
   const [editing, setEditing] = useState(false);
@@ -60,18 +60,22 @@ const CourseInformation = () => {
       <h3>Course details</h3>
       <div>
         {editing ? (
-          <div>
-            <TextEditor
-              setEditorHtml={setEditorHtml}
-              editorHtml={editorHtml}
-              setOptions={setOptions}
-            />
-            <Button onClick={handleSave}>Save</Button>
-            <Button onClick={() => setEditing(false)}>Cancel</Button>
-          </div>
+          userRole === "instructor" && (
+            <div>
+              <TextEditor
+                setEditorHtml={setEditorHtml}
+                editorHtml={editorHtml}
+                setOptions={setOptions}
+              />
+              <Button onClick={handleSave}>Save</Button>
+              <Button onClick={() => setEditing(false)}>Cancel</Button>
+            </div>
+          )
         ) : (
           <div>
-            <Button onClick={() => setEditing(true)}>Edit the content</Button>
+            {userRole === "instructor" && (
+              <Button onClick={() => setEditing(true)}>Edit the content</Button>
+            )}
             <div
               dangerouslySetInnerHTML={{ __html: editorHtml }}
               style={{ padding: "30px" }}

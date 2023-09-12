@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Select, Button, Checkbox, Radio } from "antd";
 
-import { useFetch } from "../../../hooks/useFetch";
-import { useAuth } from "../../../contexts/userAuthContext";
+import { useFetch } from "../../../../hooks/useFetch";
+import { useAuth } from "../../../../contexts/userAuthContext";
 
 const { Option } = Select;
 const baseURL = `http://localhost:8000/instructor/add-quiz-question`;

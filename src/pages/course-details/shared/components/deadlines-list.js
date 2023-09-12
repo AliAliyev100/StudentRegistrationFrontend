@@ -1,6 +1,6 @@
 import React from "react";
-import { Collapse, Avatar, List } from "antd";
-import Icon, { HourglassOutlined } from "@ant-design/icons";
+import { Collapse, List } from "antd";
+import { HourglassOutlined } from "@ant-design/icons";
 
 const data = [
   {

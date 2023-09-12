@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   HomeOutlined,
   ReadOutlined,
@@ -7,10 +6,10 @@ import {
   CommentOutlined,
   CopyOutlined,
   BarChartOutlined,
-  EditOutlined
+  EditOutlined,
 } from "@ant-design/icons";
 import { Tabs } from "antd";
-import "../css/course-details.css";
+import "../../../../css/course-details.css";
 
 const MobileTab = ({ onTabChange }) => {
   function getItem(label, key, icon, children, type) {

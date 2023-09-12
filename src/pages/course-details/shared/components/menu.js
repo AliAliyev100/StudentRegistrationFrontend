@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   HomeOutlined,
   ReadOutlined,
@@ -7,11 +6,9 @@ import {
   BookOutlined,
   CopyOutlined,
   BarChartOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import { Button, Menu } from "antd";
+import { Menu } from "antd";
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -32,11 +29,6 @@ const items = [
   getItem("Quizzes", "8", <EditOutlined />),
 ];
 const MenuComponent = ({ onTabChange }) => {
-  const [collapsed, setCollapsed] = useState(true);
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-
   const handleTabSelect = (e) => {
     onTabChange(e.key);
   };

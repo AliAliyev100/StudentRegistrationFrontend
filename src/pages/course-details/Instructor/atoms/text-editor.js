@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 
-import "../css/course-details.css";
+import "../../../../css/course-details.css";
 
 import { Button, Row, Col } from "antd"; // Import Button and layout components
 

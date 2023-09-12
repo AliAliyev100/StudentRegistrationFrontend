@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button } from "antd";
-import { useAuth } from "../../../contexts/userAuthContext";
-import { useFetch } from "../../../hooks/useFetch";
+import { useAuth } from "../../../../contexts/userAuthContext";
+import { useFetch } from "../../../../hooks/useFetch";
 
 function DeleteConfirmationModal({
   visible,

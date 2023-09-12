@@ -1,9 +1,9 @@
 import { React, useState, useEffect } from "react";
 import { Card, List, Modal, Button, Form, Input } from "antd";
-import { NewAnnouncementForm } from "../atoms/new-announcement-form";
-import { useAuth } from "../../../contexts/userAuthContext";
-import { useFetch } from "../../../hooks/useFetch";
-import { useWindowWidth } from "../../../hooks/useWindowWidth";
+import { NewAnnouncementForm } from "../../atoms/new-announcement-form";
+import { useAuth } from "../../../../contexts/userAuthContext";
+import { useFetch } from "../../../../hooks/useFetch";
+import { useWindowWidth } from "../../../../hooks/useWindowWidth";
 
 import { useParams } from "react-router-dom";
 const { Meta } = Card;
@@ -15,7 +15,7 @@ const AnnouncementsComponent = () => {
   const createUrl = `http://localhost:8000/instructor/${courseId}/create-announcement`;
   const getUrl = `http://localhost:8000/courses/${courseId}/announcements`;
 
-  const { userToken, isLoggedIn } = useAuth();
+  const { userToken, isLoggedIn, userRole } = useAuth();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalValues, setModalValues] = useState({
     title: "",
@@ -88,9 +88,11 @@ const AnnouncementsComponent = () => {
           }}
         >
           <h3>Announcements</h3>
-          <Button type="primary" onClick={() => setIsModalVisible(true)}>
-            Create a new Announcement
-          </Button>
+          {userRole === "Instructor" && (
+            <Button type="primary" onClick={() => setIsModalVisible(true)}>
+              Create a new Announcement
+            </Button>
+          )}
         </div>
       ) : (
         <div
@@ -102,9 +104,11 @@ const AnnouncementsComponent = () => {
           }}
         >
           <h3>Announcements</h3>
-          <Button type="primary" onClick={() => setIsModalVisible(true)}>
-            Create a new Announcement
-          </Button>
+          {userRole === "Instructor" && (
+            <Button type="primary" onClick={() => setIsModalVisible(true)}>
+              Create a new Announcement
+            </Button>
+          )}
         </div>
       )}
 
@@ -128,12 +132,14 @@ const AnnouncementsComponent = () => {
           </List.Item>
         )}
       />
-      <NewAnnouncementForm
-        visible={isModalVisible}
-        onCreate={handleCreate}
-        onCancel={handleCancel}
-        handleInputChange={handleInputChange}
-      />
+      {userRole === "Instructor" && (
+        <NewAnnouncementForm
+          visible={isModalVisible}
+          onCreate={handleCreate}
+          onCancel={handleCancel}
+          handleInputChange={handleInputChange}
+        />
+      )}
     </div>
   );
 };

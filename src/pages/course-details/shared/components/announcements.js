@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { Card, List, Modal, Button, Form, Input } from "antd";
-import { NewAnnouncementForm } from "../../atoms/new-announcement-form";
+import { NewAnnouncementForm } from "../../Instructor/atoms/new-announcement-form";
 import { useAuth } from "../../../../contexts/userAuthContext";
 import { useFetch } from "../../../../hooks/useFetch";
 import { useWindowWidth } from "../../../../hooks/useWindowWidth";
@@ -88,7 +88,7 @@ const AnnouncementsComponent = () => {
           }}
         >
           <h3>Announcements</h3>
-          {userRole === "Instructor" && (
+          {userRole === "instructor" && (
             <Button type="primary" onClick={() => setIsModalVisible(true)}>
               Create a new Announcement
             </Button>
@@ -104,7 +104,7 @@ const AnnouncementsComponent = () => {
           }}
         >
           <h3>Announcements</h3>
-          {userRole === "Instructor" && (
+          {userRole === "instructor" && (
             <Button type="primary" onClick={() => setIsModalVisible(true)}>
               Create a new Announcement
             </Button>
@@ -132,7 +132,7 @@ const AnnouncementsComponent = () => {
           </List.Item>
         )}
       />
-      {userRole === "Instructor" && (
+      {userRole === "instructor" && (
         <NewAnnouncementForm
           visible={isModalVisible}
           onCreate={handleCreate}
